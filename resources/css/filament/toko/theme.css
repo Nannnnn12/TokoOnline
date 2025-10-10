@@ -1,0 +1,6 @@
+@import '../../vendor/filament/filament/resources/css/theme.css';
+
+/* Tambahkan warna khusus kamu di sini */
+:root {
+    --primary: 255 115 0; /* warna oranye */
+}
