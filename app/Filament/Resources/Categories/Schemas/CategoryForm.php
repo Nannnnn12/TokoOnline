@@ -16,13 +16,13 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('category_name')
+                ->label('Nama Kategori')
                     ->required()
                     ->afterStateUpdated(function (Set $set, ?string $state) {
                         $set('slug', Str::slug($state));
                     }),
-                TextInput::make('slug')
-                    ->required(),
                 FileUpload::make('icon')
+                ->label('Ikon')
                     ->image()
                     ->default(null),
             ]);
