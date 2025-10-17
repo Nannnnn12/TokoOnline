@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filament\Resources\Categories;
-
+use UnitEnum;
 use App\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
@@ -18,13 +18,35 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null$navigationIcon = 'heroicon-o-tag'; 
 
+    protected static string|UnitEnum|null $navigationGroup = 'Manajemen Toko';
+    protected static ?int $navigationSort = 1;
     protected static ?string $recordTitleAttribute = 'category_name';
+
+    protected static ?string $modelLabel = 'Kategori';
+
+    protected static ?string $pluralModelLabel = 'Kategori';
+
+    protected static ?string $navigationLabel = 'Kategori';
 
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['slug'] = \Illuminate\Support\Str::slug($data['category_name']);
+
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['slug'] = \Illuminate\Support\Str::slug($data['category_name']);
+
+        return $data;
     }
 
     public static function table(Table $table): Table

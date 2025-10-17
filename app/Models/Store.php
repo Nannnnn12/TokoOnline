@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    //
+    protected $fillable = [
+        'store_name',
+        'description',
+        'address',
+        'logo',
+        'whatsapp',
+        'tiktok',
+        'facebook',
+        'instagram',
+        'toko_pedia',
+        'shopee',
+    ];
 }

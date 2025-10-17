@@ -16,21 +16,28 @@ class ProductsTable
         return $table
             ->columns([
                 TextColumn::make('product_name')
+                ->label('Nama Produk')
                     ->searchable(),
                 TextColumn::make('slug')
+                ->label('Slug')
                     ->searchable(),
                 TextColumn::make('purchase_price')
+                ->label('Harga Beli')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('sell_price')
+                ->label('Harga Jual')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('stock')
+                ->label('Stok')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('status')
+                ->label('Status')
                     ->badge(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->label('Gambar'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -44,11 +51,13 @@ class ProductsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('Edit'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('Hapus'),
                 ]),
             ]);
     }

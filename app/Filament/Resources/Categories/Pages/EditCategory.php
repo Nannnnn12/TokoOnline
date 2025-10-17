@@ -16,4 +16,11 @@ class EditCategory extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['slug'] = \Illuminate\Support\Str::slug($data['category_name']);
+
+        return $data;
+    }
 }
