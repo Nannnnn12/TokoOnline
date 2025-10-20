@@ -3,9 +3,10 @@
 namespace App\Filament\Resources\Products\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
+
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -18,6 +19,9 @@ class ProductsTable
                 TextColumn::make('product_name')
                 ->label('Nama Produk')
                     ->searchable(),
+                TextColumn::make('category.category_name')
+                    ->label('Kategori')
+                    ->sortable(),
                 TextColumn::make('slug')
                 ->label('Slug')
                     ->searchable(),
@@ -36,8 +40,6 @@ class ProductsTable
                 TextColumn::make('status')
                 ->label('Status')
                     ->badge(),
-                ImageColumn::make('image')
-                    ->label('Gambar'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -53,6 +55,8 @@ class ProductsTable
             ->recordActions([
                 EditAction::make()
                     ->label('Edit'),
+                DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
