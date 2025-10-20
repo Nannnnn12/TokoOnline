@@ -19,19 +19,29 @@ class GoogleLoginController extends Controller
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->user();
-        $user = User::where('email', $googleUser->email)->first();
-        if (!$user) {
-            $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000, 999999))]);
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            $user = User::where('email', $googleUser->email)->first();
+
+            if (!$user) {
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => Hash::make(rand(100000, 999999)),
+                    'role' => 'user' // Default role for Google login users
+                ]);
+            }
+
+            Auth::login($user);
+
+            if ($user->role === 'admin') {
+                return redirect('/admin'); // dashboard Filament
+            }
+
+            return redirect('/');
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Failed to login with Google. Please try again.');
         }
-
-        Auth::login($user);
-
-        if ($user->role === 'admin') {
-            return redirect('/admin'); // dashboard Filament
-        }
-
-        return redirect('/');
     }
 
     public function logout(Request $request)

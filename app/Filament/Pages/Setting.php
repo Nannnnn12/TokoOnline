@@ -95,6 +95,19 @@ class Setting extends Page
                         TextInput::make('shopee')
                             ->label('Shopee'),
                     ]),
+
+                Section::make('Homepage Settings')
+                    ->schema([
+                        Toggle::make('show_homepage_button')
+                            ->label('Show Homepage Button')
+                            ->default(true)
+                            ->helperText('Show a button to visit the homepage from admin panel'),
+
+                        TextInput::make('homepage_button_text')
+                            ->label('Homepage Button Text')
+                            ->default('Visit Homepage')
+                            ->helperText('Text for the homepage button'),
+                    ]),
             ])->columns(2)
             ->statePath('data');
     }

@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -22,6 +24,10 @@ class ProductForm
                     ->afterStateUpdated(function (Set $set, ?string $state) {
                         $set('slug', Str::slug($state));
                     }),
+                Select::make('category_id')
+                    ->label('Kategori')
+                    ->options(Category::all()->pluck('category_name', 'id'))
+                    ->required(),
                 Textarea::make('description')
                     ->label('Deskripsi')
                     ->default(null)
@@ -43,9 +49,7 @@ class ProductForm
                     ->options(['active' => 'Active', 'inactive' => 'Inactive'])
                     ->default('active')
                     ->required(),
-                FileUpload::make('image')
-                ->label('Gambar')
-                    ->image(),
+
             ]);
     }
 }
