@@ -76,6 +76,11 @@ class CheckoutController extends Controller
             $total = $product->sell_price * $request->quantity;
 
             DB::transaction(function () use ($request, $product, $total) {
+                // Check stock availability
+                if ($product->stock < $request->quantity) {
+                    throw new \Exception('Insufficient stock for product: ' . $product->product_name);
+                }
+
                 // Create transaction
                 $transaction = Transaction::create([
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
@@ -92,6 +97,9 @@ class CheckoutController extends Controller
                     'price' => $product->sell_price,
                     'quantity' => $request->quantity,
                 ]);
+
+                // Decrease product stock
+                $product->decrement('stock', $request->quantity);
             });
 
             return redirect()->route('products.index')->with('success', 'Order placed successfully!');
@@ -109,6 +117,11 @@ class CheckoutController extends Controller
 
             $transaction = null;
             DB::transaction(function () use ($request, $product, $total, &$transaction) {
+                // Check stock availability
+                if ($product->stock < $request->quantity) {
+                    throw new \Exception('Insufficient stock for product: ' . $product->product_name);
+                }
+
                 // Create transaction
                 $transaction = Transaction::create([
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
@@ -125,6 +138,9 @@ class CheckoutController extends Controller
                     'price' => $product->sell_price,
                     'quantity' => $request->quantity,
                 ]);
+
+                // Decrease product stock
+                $product->decrement('stock', $request->quantity);
             });
 
             return redirect()->back()->with([
@@ -158,6 +174,13 @@ class CheckoutController extends Controller
 
             $transaction = null;
             DB::transaction(function () use ($request, $carts, $total, &$transaction) {
+                // Check stock availability for all products
+                foreach ($carts as $cart) {
+                    if ($cart->product->stock < $cart->quantity) {
+                        throw new \Exception('Insufficient stock for product: ' . $cart->product->product_name);
+                    }
+                }
+
                 // Create transaction
                 $transaction = Transaction::create([
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
@@ -168,7 +191,7 @@ class CheckoutController extends Controller
                     'notes' => $request->notes,
                 ]);
 
-                // Create transaction items
+                // Create transaction items and decrease stock
                 foreach ($carts as $cart) {
                     TransactionItem::create([
                         'transaction_id' => $transaction->id,
@@ -176,6 +199,9 @@ class CheckoutController extends Controller
                         'price' => $cart->product->sell_price,
                         'quantity' => $cart->quantity,
                     ]);
+
+                    // Decrease product stock
+                    $cart->product->decrement('stock', $cart->quantity);
                 }
 
                 // Remove items from cart

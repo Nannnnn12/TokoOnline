@@ -1,6 +1,11 @@
-- [x] Remove slug from Product model fillable
-- [x] Remove slug from Category model fillable
-- [x] Update ProductForm to auto-generate slug from product_name
-- [x] Update CategoryForm to remove slug input (already has auto-gen)
-- [x] Add mutateFormDataBeforeCreate and mutateFormDataBeforeSave in ProductResource
-- [x] Add mutateFormDataBeforeCreate and mutateFormDataBeforeSave in CategoryResource
+# TODO: Fix Checkout Now Button
+
+- [x] Remove direct POST form for checkout now and use link to checkout.index instead
+- [x] Update JavaScript to modify checkout link URL with selected quantity
+
+# TODO: Create OrderRelationManager
+
+- [x] Add orders relationship in Product model using hasManyThrough
+- [x] Create OrderRelationManager to display orders and order items for products
+- [x] Update ProductResource to include OrderRelationManager
+- [x] Create view for order items modal

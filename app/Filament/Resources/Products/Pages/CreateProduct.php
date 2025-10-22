@@ -16,6 +16,17 @@ class CreateProduct extends CreateRecord
         return $data;
     }
 
+    protected function afterCreate(): void
+    {
+        $images = $this->form->getState()['images'] ?? [];
+
+        foreach ($images as $image) {
+            $this->record->images()->create([
+                'image_path' => $image,
+            ]);
+        }
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

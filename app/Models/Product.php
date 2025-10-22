@@ -49,4 +49,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Transaction::class, TransactionItem::class, 'product_id', 'id', 'id', 'transaction_id');
+    }
 }

@@ -7,14 +7,21 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Product;
 
 Route::get('/', function () {
     $store = App\Models\Store::first();
-    return view('user.homepage', compact('store'));
+    $products = Product::with(['category', 'images'])->where('status', 'active')->limit(6)->get();
+    return view('user.homepage', compact('store', 'products'));
 })->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/contact', function () {
+    $store = App\Models\Store::first();
+    return view('user.contact', compact('store'));
+})->name('contact');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,7 +30,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::patch('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
 
@@ -44,3 +51,7 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 
 Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::middleware('admin')->group(function () {
+    // Admin routes can be added here if needed
+});

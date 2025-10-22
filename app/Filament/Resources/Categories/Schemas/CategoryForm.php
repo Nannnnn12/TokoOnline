@@ -24,6 +24,7 @@ class CategoryForm
                 FileUpload::make('icon')
                 ->label('Ikon')
                     ->image()
+                    ->disk('public')
                     ->default(null),
             ]);
     }

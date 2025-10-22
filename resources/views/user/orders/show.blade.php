@@ -10,7 +10,7 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
-                Back to Orders
+                Kembali ke Pesanan
             </a>
         </div>
 
@@ -20,10 +20,10 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 class="text-2xl font-bold text-white">
-                            Order #{{ $transaction->order_code }}
+                            Pesanan #{{ $transaction->order_code }}
                         </h1>
                         <p class="text-blue-100 mt-1">
-                            Placed on {{ $transaction->created_at->format('F d, Y \a\t H:i') }}
+                          {{ $transaction->created_at->format('F d, Y \a\t H:i') }}
                         </p>
                     </div>
                     <div class="mt-4 sm:mt-0">
@@ -49,19 +49,19 @@
             <div class="px-6 py-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Payment Method</h3>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Metode Pembayaran</h3>
                         <p class="mt-1 text-sm text-gray-900">
-                            {{ $transaction->payment_method == 'cod' ? 'Cash on Delivery' : 'Online Payment' }}
+                            {{ $transaction->payment_method == 'cod' ? 'Bayar di Tempat' : 'Pembayaran Online' }}
                         </p>
                     </div>
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Shipping Address</h3>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Alamat Pengiriman</h3>
                         <p class="mt-1 text-sm text-gray-900">
-                            {{ $transaction->customer->address ?? 'Address not provided' }}
+                            {{ $transaction->customer->address ?? 'Alamat tidak disediakan' }}
                         </p>
                     </div>
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Amount</h3>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Jumlah</h3>
                         <p class="mt-1 text-lg font-semibold text-gray-900">
                             Rp {{ number_format($transaction->total, 0, ',', '.') }}
                         </p>
@@ -73,7 +73,7 @@
         <!-- Order Items -->
         <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Order Items</h2>
+                <h2 class="text-lg font-semibold text-gray-900">Item Pesanan</h2>
             </div>
 
             <div class="divide-y divide-gray-200">
@@ -109,10 +109,10 @@
                                 </p>
                                 <div class="flex items-center mt-2 space-x-4">
                                     <span class="text-sm text-gray-500">
-                                        Quantity: {{ $item->quantity }}
+                                        Jumlah: {{ $item->quantity }}
                                     </span>
                                     <span class="text-sm font-medium text-gray-900">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }} each
+                                        Rp {{ number_format($item->price, 0, ',', '.') }} per item
                                     </span>
                                 </div>
                             </div>
@@ -137,8 +137,8 @@
                             <span>Rp {{ number_format($transaction->total, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
-                            <span>Shipping</span>
-                            <span>Free</span>
+                            <span>Pengiriman</span>
+                            <span>Gratis</span>
                         </div>
                         <div class="border-t border-gray-300 pt-2">
                         <div class="flex justify-between text-lg font-semibold text-gray-900">
@@ -154,7 +154,7 @@
         <!-- Order Status Timeline -->
         <div class="bg-white rounded-lg shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Order Status</h2>
+                <h2 class="text-lg font-semibold text-gray-900">Status Pesanan</h2>
             </div>
 
             <div class="px-6 py-4">
@@ -194,7 +194,7 @@
                                         </p>
                                         @if($index == $currentStatusIndex)
                                             <p class="text-xs text-gray-500">
-                                                Current status
+                                                Status saat ini
                                             </p>
                                         @endif
                                     </div>

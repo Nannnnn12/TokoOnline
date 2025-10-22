@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['category', 'images']);
+        $query = Product::with(['category', 'images'])->where('status', 'active');
 
         // Filter by category
         if ($request->has('category') && $request->category) {
@@ -48,9 +48,15 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        // Check if product is active
+        if ($product->status !== 'active') {
+            abort(404);
+        }
+
         $product->load(['category', 'images']);
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
+            ->where('status', 'active')
             ->limit(4)
             ->get();
 

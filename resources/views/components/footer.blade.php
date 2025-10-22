@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="bg-gray-900 text-white">
+<footer class="bg-gray-600 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Store Info -->
@@ -79,8 +79,8 @@
                     &copy; {{ date('Y') }} {{ $store->store_name ?? 'TokoKu' }}. All rights reserved.
                 </p>
                 <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="/privacy" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="/terms" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="/privacy" class="text-white hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="/terms" class="text-white hover:text-white text-sm transition-colors">Terms of Service</a>
                 </div>
             </div>
         </div>

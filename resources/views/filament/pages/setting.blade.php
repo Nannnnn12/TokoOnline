@@ -1,4 +1,10 @@
 <x-filament-panels::page>
+    @if($successMessage)
+        <div style="margin-bottom: 1rem; padding: 1rem; background: #d1fae5; border: 1px solid #10b981; border-radius: 0.5rem; color: #065f46;">
+            {{ $successMessage }}
+        </div>
+    @endif
+
     <form wire:submit.prevent="save">
         {{ $this->form }}
         <div style="margin-top: 1rem">

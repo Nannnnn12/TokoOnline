@@ -28,13 +28,13 @@
                                             <!-- Product Image -->
                                             <div class="flex-shrink-0">
                                                 <img class="h-16 w-16 rounded-lg object-cover"
-                                                     src="{{ $cart->product->images->first()?->image_path ?? asset('images/placeholder-product.png') }}"
+                                                     src="{{ $cart->product->images->first() ? asset('storage/' . $cart->product->images->first()->image_path) : asset('images/placeholder-product.png') }}"
                                                      alt="{{ $cart->product->name }}">
                                             </div>
 
                                             <!-- Product Details -->
                                             <div class="flex-1">
-                                                <h3 class="text-lg font-medium text-gray-900">{{ $cart->product->name }}</h3>
+                                                <h3 class="text-lg font-medium text-gray-900">{{ $cart->product->product_name }}</h3>
                                                 <p class="text-sm text-gray-600">Rp {{ number_format($cart->product->sell_price, 0, ',', '.') }}</p>
                                             </div>
 
@@ -76,7 +76,7 @@
                                                 @method('DELETE')
                                                 <button type="submit"
                                                         class="text-red-600 hover:text-red-900 p-1"
-                                                        onclick="return confirm('Are you sure you want to remove this item?')">
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
@@ -90,15 +90,15 @@
                             <!-- Cart Summary -->
                             <div class="lg:w-80">
                                 <div class="bg-gray-50 p-6 rounded-lg sticky top-4">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Cart Summary</h3>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ringkasan Keranjang</h3>
 
                                     <div class="space-y-3 mb-6">
                                         <div class="flex justify-between text-sm">
-                                            <span>Selected Products:</span>
+                                            <span>Produk Terpilih:</span>
                                             <span id="selected-count">0</span>
                                         </div>
                                         <div class="flex justify-between text-sm">
-                                            <span>Total Items:</span>
+                                            <span>Total Item:</span>
                                             <span>{{ $carts->sum('quantity') }}</span>
                                         </div>
                                         <div class="border-t pt-3">
@@ -110,12 +110,12 @@
                                     </div>
 
                                     <button class="w-full bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed" id="checkout-btn" disabled onclick="proceedToCheckout()">
-                                        Proceed to Checkout
+                                        Lanjut ke Checkout
                                     </button>
 
                                     <div class="mt-4 text-center">
                                         <a href="{{ route('products.index') }}" class="text-yellow-600 hover:text-yellow-800 text-sm">
-                                            Continue Shopping
+                                            Lanjut Belanja
                                         </a>
                                     </div>
                                 </div>
@@ -123,9 +123,9 @@
                         </div>
                     @else
                         <div class="text-center py-8">
-                            <p class="text-gray-500">Your cart is empty.</p>
+                            <p class="text-gray-500">Keranjang Anda kosong.</p>
                             <a href="{{ route('products.index') }}" class="mt-4 inline-block px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
-                                Continue Shopping
+                                Lanjut Belanja
                             </a>
                         </div>
                     @endif
@@ -257,7 +257,7 @@
         function proceedToCheckout() {
             const selectedCheckboxes = document.querySelectorAll('.cart-checkbox:checked');
             if (selectedCheckboxes.length === 0) {
-                alert('Please select at least one item to checkout.');
+                alert('Silakan pilih setidaknya satu item untuk checkout.');
                 return;
             }
 

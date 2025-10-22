@@ -5,34 +5,65 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Product Images -->
-                <div class="space-y-4">
-                    <div class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
-                        @if ($product->images->count() > 0)
-                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
-                                alt="{{ $product->product_name }}" class="w-full h-full object-cover" id="main-image"
-                                onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
-                        @else
-                            <div class="w-full h-full bg-gray-300 flex items-center justify-center">
-                                <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </div>
-                        @endif
+                <div class="space-y-6">
+                    <!-- Main Image Container -->
+                    <div class="relative group">
+                        <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                            @if ($product->images->count() > 0)
+                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                                    alt="{{ $product->product_name }}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500" id="main-image"
+                                    onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <svg class="w-32 h-32 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                        <p class="text-gray-500 font-medium">No Image Available</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Zoom Icon Overlay -->
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
                     </div>
 
+                    <!-- Thumbnail Gallery -->
                     @if ($product->images->count() > 1)
-                        <div class="grid grid-cols-4 gap-4">
-                            @foreach ($product->images as $image)
-                                <button onclick="changeImage('{{ asset('storage/' . $image->image_path) }}')"
-                                    class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden border-2 border-transparent hover:border-yellow-500 transition-colors">
+                        <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
+                            @foreach ($product->images as $index => $image)
+                                <button onclick="changeImage('{{ asset('storage/' . $image->image_path) }}', {{ $index }})"
+                                    class="aspect-square bg-gray-100 rounded-lg sm:rounded-xl overflow-hidden border-2 {{ $index === 0 ? 'border-yellow-500 shadow-lg' : 'border-transparent hover:border-yellow-400' }} transition-all duration-200 hover:shadow-md"
+                                    id="thumb-{{ $index }}">
                                     <img src="{{ asset('storage/' . $image->image_path) }}"
                                         alt="{{ $product->product_name }}" class="w-full h-full object-cover"
                                         onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
                                 </button>
                             @endforeach
+                        </div>
+                    @endif
+
+                    <!-- Image Navigation Arrows (if more than 5 images) -->
+                    @if ($product->images->count() > 5)
+                        <div class="flex justify-center space-x-2 mt-4">
+                            <button onclick="scrollThumbnails('left')" class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button onclick="scrollThumbnails('right')" class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
                         </div>
                     @endif
                 </div>
@@ -44,7 +75,7 @@
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                                 <li class="inline-flex items-center">
                                     <a href="{{ route('products.index') }}"
-                                        class="text-gray-700 hover:text-yellow-600">Products</a>
+                                        class="text-gray-700 hover:text-yellow-600">Produk</a>
                                 </li>
                                 <li>
                                     <div class="flex items-center">
@@ -63,11 +94,33 @@
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->product_name }}</h1>
                         <p class="text-xl font-semibold text-yellow-600 mb-4">Rp
                             {{ number_format($product->sell_price, 0, ',', '.') }}</p>
+                        <p class="text-sm text-gray-600 mb-4">Stock: {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
                     </div>
 
-                    <div class="prose prose-gray max-w-none">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
-                        <p class="text-gray-600">{{ $product->description }}</p>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900">Deskripsi Produk</h3>
+                        </div>
+
+                        <div class="prose prose-gray max-w-none">
+                            <div class="text-gray-700 leading-relaxed space-y-4">
+                                @php
+                                    $description = nl2br(e($product->description));
+                                    $paragraphs = explode('<br />', $description);
+                                @endphp
+
+                                @foreach($paragraphs as $paragraph)
+                                    @if(trim($paragraph))
+                                        <p class="text-base leading-relaxed">{{ $paragraph }}</p>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Add to Cart Form -->
@@ -76,7 +129,7 @@
                             <form method="POST" action="{{ route('cart.add', $product) }}" class="space-y-4">
                                 @csrf
                                 <div>
-                                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
                                     <div class="flex items-center space-x-3">
                                         <button type="button" onclick="decrementQuantity()"
                                             class="p-2 border border-gray-300 rounded-md hover:bg-gray-50">
@@ -85,7 +138,7 @@
                                                     d="M20 12H4"></path>
                                             </svg>
                                         </button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}"
                                             class="w-20 text-center px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
                                             onchange="updateCheckoutQuantity({{ $product->id }})">
                                         <button type="button" onclick="incrementQuantity()"
@@ -99,47 +152,42 @@
                                 </div>
 
                                 <div class="space-y-3">
-                                    <button type="submit"
-                                        class="w-full bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium">
-                                        Add to Cart
-                                    </button>
+                                    @if($product->stock > 0)
+                                        <button type="submit"
+                                            class="w-full bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium">
+                                            Tambah ke Keranjang
+                                        </button>
 
-                                    @if (auth()->user()->address)
-                                        <form method="POST" action="{{ route('checkout.store') }}"
-                                            class="inline-block w-full">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="quantity" value="1"
-                                                id="checkout-quantity-{{ $product->id }}">
-                                            <input type="hidden" name="payment_method" value="cod">
-                                            <input type="hidden" name="address" value="{{ auth()->user()->address }}">
-
-                                            <button type="submit"
-                                                class="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
-                                                <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                                </svg>
-                                                Checkout Now
-                                            </button>
-                                        </form>
-                                    @else
-                                        <a href="{{ route('checkout.index', ['product_id' => $product->id, 'quantity' => 1]) }}"
+                                        <a href="{{ route('checkout.index', ['product_id' => $product->id, 'quantity' => 1]) }}" id="checkout-link"
                                             class="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium inline-block text-center">
                                             <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                             </svg>
-                                            Checkout Now
+                                            Beli Sekarang
                                         </a>
+                                    @else
+                                        <button type="button" disabled
+                                            class="w-full bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed font-medium">
+                                            Stok Habis
+                                        </button>
+
+                                        <button type="button" disabled
+                                            class="w-full bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed font-medium">
+                                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                            </svg>
+                                            Stok Habis
+                                        </button>
                                     @endif
                                 </div>
                             </form>
                         @else
                             <div class="text-center">
-                                <p class="text-gray-600 mb-4">Please sign in to add items to your cart.</p>
+                                <p class="text-gray-600 mb-4">Silahkan Sign In Terlebih Dahulu</p>
                                 <a href="{{ route('login') }}"
                                     class="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium inline-block">
                                     Sign In
@@ -149,61 +197,45 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Related Products -->
-            @if ($relatedProducts->count() > 0)
-                <div class="mt-16">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Products</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        @foreach ($relatedProducts as $relatedProduct)
-                            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                                <div class="aspect-w-1 aspect-h-1 bg-gray-200">
-                                    @if ($relatedProduct->images->count() > 0)
-                                        <img src="{{ asset('storage/' . $relatedProduct->images->first()->image_path) }}"
-                                            alt="{{ $relatedProduct->product_name }}" class="w-full h-48 object-cover"
-                                            onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
-                                    @else
-                                        <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
-                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                                        <a href="{{ route('products.show', $relatedProduct) }}"
-                                            class="hover:text-yellow-600 transition-colors">
-                                            {{ $relatedProduct->product_name }}
-                                        </a>
-                                    </h3>
-                                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $relatedProduct->description }}
-                                    </p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-xl font-bold text-yellow-600">Rp
-                                            {{ number_format($relatedProduct->sell_price, 0, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 
     <script>
-        function changeImage(imageSrc) {
+        function changeImage(imageSrc, index) {
             document.getElementById('main-image').src = imageSrc;
+
+            // Update thumbnail selection
+            const thumbnails = document.querySelectorAll('[id^="thumb-"]');
+            thumbnails.forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.remove('border-transparent', 'hover:border-yellow-400');
+                    thumb.classList.add('border-yellow-500', 'shadow-lg');
+                } else {
+                    thumb.classList.remove('border-yellow-500', 'shadow-lg');
+                    thumb.classList.add('border-transparent', 'hover:border-yellow-400');
+                }
+            });
+        }
+
+        function scrollThumbnails(direction) {
+            const container = document.querySelector('.grid.grid-cols-5');
+            const scrollAmount = 200; // Adjust based on thumbnail size
+
+            if (direction === 'left') {
+                container.scrollLeft -= scrollAmount;
+            } else {
+                container.scrollLeft += scrollAmount;
+            }
         }
 
         function incrementQuantity() {
             const quantityInput = document.getElementById('quantity');
-            quantityInput.value = parseInt(quantityInput.value) + 1;
-            updateCheckoutQuantity({{ $product->id }});
+            const currentValue = parseInt(quantityInput.value);
+            const maxStock = {{ $product->stock }};
+            if (currentValue < maxStock) {
+                quantityInput.value = currentValue + 1;
+                updateCheckoutQuantity({{ $product->id }});
+            }
         }
 
         function decrementQuantity() {
@@ -217,8 +249,12 @@
 
         function updateCheckoutQuantity(productId) {
             const quantityInput = document.getElementById('quantity');
-            const checkoutQuantityInput = document.getElementById('checkout-quantity-' + productId);
-            checkoutQuantityInput.value = quantityInput.value;
+            const checkoutLink = document.getElementById('checkout-link');
+            if (checkoutLink) {
+                const url = new URL(checkoutLink.href);
+                url.searchParams.set('quantity', quantityInput.value);
+                checkoutLink.href = url.toString();
+            }
         }
     </script>
 
@@ -236,7 +272,7 @@
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-white">
-                    Product {{ ucfirst(session('cart_action')) }}!
+                    Produk {{ ucfirst(session('cart_action')) }}!
                 </h3>
             </div>
 
@@ -244,12 +280,11 @@
             <div class="p-6">
                 <div class="text-center mb-6">
                     <p class="text-gray-600 mb-4">
-                        "{{ session('product_name') }}" has been successfully {{ session('cart_action') }} to your
-                        cart
+                        "{{ session('product_name') }}" Telah Berhasil ditambahkan {{ session('cart_action') }} ke Keranjangmu
                         @if (session('cart_action') == 'added')
                             with quantity {{ session('quantity') }}
                         @else
-                            (quantity increased by {{ session('quantity') }})
+                            (Jumlah Bertambah {{ session('quantity') }})
                         @endif
                         .
                     </p>
@@ -261,7 +296,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span>Added to cart successfully</span>
+                            <span>Berhasil Tambah Ke Keranjan</span>
                         </div>
                     </div>
 
@@ -272,7 +307,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                             </svg>
-                            Continue shopping or proceed to checkout
+                            Lanjutkan Belanja atau Proses Checkout
                         </div>
                         <div class="flex items-center text-sm text-gray-600">
                             <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor"
@@ -281,7 +316,7 @@
                                     d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                                 </path>
                             </svg>
-                            View your cart anytime
+                           Lihat Keranjang Anda untuk melihat semua item
                         </div>
                     </div>
                 </div>
@@ -294,7 +329,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        Continue Shopping
+                        Lanjutkan Belanja
                     </button>
                     <button onclick="viewCart()"
                         class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center">
@@ -303,7 +338,7 @@
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13l-1.1-5M7 13h10m0 0v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8z">
                             </path>
                         </svg>
-                        View Cart
+                        Lihat Keranjang
                     </button>
                 </div>
             </div>
@@ -320,7 +355,10 @@
         }
 
         function closeCartModal() {
-            document.getElementById('cartModal').style.display = 'none';
+            const modal = document.getElementById('cartModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         }
 
         // Close modal when clicking outside
@@ -335,7 +373,8 @@
 
                 // Auto-close after 5 seconds
                 setTimeout(function() {
-                    if (modal.style.display !== 'none') {
+                    const modalCheck = document.getElementById('cartModal');
+                    if (modalCheck && modalCheck.style.display !== 'none') {
                         closeCartModal();
                     }
                 }, 5000);
