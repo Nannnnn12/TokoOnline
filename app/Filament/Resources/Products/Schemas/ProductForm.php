@@ -49,6 +49,15 @@ class ProductForm
                     ->options(['active' => 'Active', 'inactive' => 'Inactive'])
                     ->default('active')
                     ->required(),
+                FileUpload::make('images')
+                    ->label('Gambar Produk')
+                    ->image()
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('product-images')
+                    ->visibility('public')
+                    ->columnSpanFull(),
+
 
             ]);
     }

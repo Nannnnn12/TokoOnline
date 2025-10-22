@@ -34,10 +34,6 @@ class GoogleLoginController extends Controller
 
             Auth::login($user);
 
-            if ($user->role === 'admin') {
-                return redirect('/admin'); // dashboard Filament
-            }
-
             return redirect('/');
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Failed to login with Google. Please try again.');

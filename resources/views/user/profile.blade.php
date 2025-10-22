@@ -15,7 +15,7 @@
                 <h2 class="text-lg font-semibold text-gray-900">Personal Information</h2>
             </div>
 
-            <form action="{{ route('profile.update') }}" method="POST" class="p-6 space-y-6">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
                 @csrf
                 @method('PUT')
 
@@ -75,6 +75,39 @@
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div>
+
+                <!-- Profile Image Field -->
+                <div>
+                    <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image</label>
+                    <div class="mt-1 flex items-center space-x-4">
+                        <div class="relative">
+                            @if($user->profile_image)
+                                <img id="profile-preview" src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image"
+                                     class="w-20 h-20 rounded-full object-cover border-2 border-gray-200">
+                            @else
+                                <div id="profile-preview" class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                            <button type="button" onclick="removeProfileImage()" id="remove-image-btn"
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 {{ $user->profile_image ? '' : 'hidden' }}">
+                                ×
+                            </button>
+                        </div>
+                        <div class="flex-1">
+                            <input type="file" name="profile_image" id="profile_image" accept="image/jpeg,image/png,image/jpg"
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 @error('profile_image') border-red-300 @enderror">
+                            <p class="mt-1 text-sm text-gray-500">Upload a new profile image (JPG, PNG only, max 2MB)</p>
+                        </div>
+                    </div>
+                    @error('profile_image')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                    <input type="hidden" name="remove_profile_image" id="remove_profile_image" value="0">
                 </div>
 
                 <!-- Address Field -->
@@ -169,4 +202,53 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('profile-preview');
+    const removeBtn = document.getElementById('remove-image-btn');
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" class="w-20 h-20 rounded-full object-cover border-2 border-gray-200" alt="Preview">`;
+            removeBtn.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeProfileImage() {
+    const preview = document.getElementById('profile-preview');
+    const fileInput = document.getElementById('profile_image');
+    const removeInput = document.getElementById('remove_profile_image');
+    const removeBtn = document.getElementById('remove-image-btn');
+
+    // Reset to default avatar
+    preview.innerHTML = `
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+    `;
+
+    // Clear file input
+    fileInput.value = '';
+
+    // Set remove flag
+    removeInput.value = '1';
+
+    // Hide remove button
+    removeBtn.classList.add('hidden');
+}
+
+// Add event listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('profile_image');
+    if (fileInput) {
+        fileInput.addEventListener('change', previewImage);
+    }
+});
+</script>
 @endsection

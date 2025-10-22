@@ -29,6 +29,8 @@ class Setting extends Page
 
     public ?array $data = [];
 
+    public ?string $successMessage = null;
+
     public function mount(): void
     {
         $store = Store::first();
@@ -61,6 +63,7 @@ class Setting extends Page
                         FileUpload::make('logo')
                             ->label('Logo')
                             ->image()
+                            ->disk('public')
                             ->directory('logo')
                             ->imageEditor()
                             ->columnSpanFull()
@@ -119,6 +122,8 @@ class Setting extends Page
         $store = Store::first() ?? new Store();
         $store->fill($data);
         $store->save();
+
+        $this->successMessage = 'Pengaturan berhasil disimpan!';
 
         Notification::make()
             ->title('Pengaturan berhasil disimpan!')

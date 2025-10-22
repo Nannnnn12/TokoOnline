@@ -5,8 +5,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
-            <p class="text-gray-600">Track and manage your order history</p>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Pesanan Saya</h1>
+            <p class="text-gray-600">Lacak dan kelola riwayat pesanan Anda</p>
         </div>
 
         @if($transactions->count() > 0)
@@ -19,10 +19,10 @@
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                 <div class="mb-2 sm:mb-0">
                                     <h3 class="text-lg font-semibold text-gray-900">
-                                        Order #{{ $transaction->order_code }}
+                                        Pesanan #{{ $transaction->order_code }}
                                     </h3>
                                     <p class="text-sm text-gray-600">
-                                        Placed on {{ $transaction->created_at->format('M d, Y \a\t H:i') }}
+                                         {{ $transaction->created_at->format('M d, Y \a\t H:i') }}
                                     </p>
                                 </div>
                                 <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
@@ -48,7 +48,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
-                                        View Details
+                                        Lihat Detail
                                     </a>
                                 </div>
                             </div>
@@ -80,11 +80,11 @@
                                                     {{ $firstItem->product->product_name }}
                                                 </p>
                                                 <p class="text-sm text-gray-500">
-                                                    Quantity: {{ $firstItem->quantity }}
+                                                Jumlah: {{ $firstItem->quantity }}
                                                 </p>
                                                 @if($transaction->items->count() > 1)
                                                     <p class="text-xs text-gray-400">
-                                                        +{{ $transaction->items->count() - 1 }} more item{{ $transaction->items->count() > 2 ? 's' : '' }}
+                                                        +{{ $transaction->items->count() - 1 }} item lagi
                                                     </p>
                                                 @endif
                                             </div>
@@ -98,7 +98,7 @@
                                         Rp {{ number_format($transaction->total, 0, ',', '.') }}
                                     </p>
                                     <p class="text-sm text-gray-600">
-                                        {{ $transaction->payment_method == 'cod' ? 'Cash on Delivery' : 'Online Payment' }}
+                                        {{ $transaction->payment_method == 'cod' ? 'Bayar di Tempat' : 'Pembayaran Online' }}
                                     </p>
                                 </div>
                             </div>
@@ -119,14 +119,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">No orders yet</h3>
-                <p class="text-gray-600 mb-6">When you place your first order, it will appear here.</p>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum ada pesanan</h3>
+                <p class="text-gray-600 mb-6">Ketika Anda melakukan pesanan pertama, pesanan akan muncul di sini.</p>
                 <a href="{{ route('products.index') }}"
                    class="inline-flex items-center px-6 py-3 bg-yellow-600 text-white font-medium rounded-lg hover:bg-yellow-700 transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                     </svg>
-                    Start Shopping
+                    Mulai Belanja
                 </a>
             </div>
         @endif

@@ -23,6 +23,7 @@ class ImagesRelationManager extends RelationManager
                 FileUpload::make('image_path')
                     ->label('Gambar Produk')
                     ->image()
+                    ->disk('public')
                     ->directory('product-images')
                     ->visibility('public')
                     ->required(),
