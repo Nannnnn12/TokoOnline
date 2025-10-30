@@ -15,14 +15,17 @@ class TransactionsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('order_code')
                     ->searchable(),
                 TextColumn::make('customer.name')
+                    ->label('Customer')
                     ->searchable(),
                 SelectColumn::make('status')
                     ->options([
                         'pending' => 'Pending',
+                        'belum_dibayar' => 'Belum Dibayar',
                         'processing' => 'Processing',
                         'shipped' => 'Shipped',
                         'delivered' => 'Delivered',
@@ -42,14 +45,20 @@ class TransactionsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('payment_method')
-                    ->badge(),
+                    ->label('Metode Pembayaran')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'midtrans' => 'info',
+                        default => 'warning',
+                    }),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
                 EditAction::make()
-                    ->label('Edit'),
+                    ->label('Lihat')
+                    ->icon('heroicon-o-eye'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

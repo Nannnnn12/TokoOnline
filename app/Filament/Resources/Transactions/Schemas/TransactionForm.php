@@ -28,6 +28,7 @@ class TransactionForm
                 Select::make('status')
                     ->options([
                         'pending' => 'Pending',
+                        'belum_dibayar' => 'Belum Dibayar',
                         'processing' => 'Processing',
                         'shipped' => 'Shipped',
                         'delivered' => 'Delivered',
