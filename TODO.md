@@ -1,11 +1,13 @@
-# TODO: Fix Checkout Now Button
+# TODO: Add Midtrans payment option to checkout page
 
-- [x] Remove direct POST form for checkout now and use link to checkout.index instead
-- [x] Update JavaScript to modify checkout link URL with selected quantity
+- [x] Update checkout.blade.php to add Midtrans payment radio button alongside COD.
+- [x] Update CheckoutController.php to handle midtrans payment method, create transaction, generate snap token, and redirect to payment page.
+- [x] Create resources/views/user/payment.blade.php with Midtrans Snap.js integration.
+- [x] Add route for payment page if needed.
 
-# TODO: Create OrderRelationManager
+# TODO: Add "belum dibayar" status and payment button for unpaid orders
 
-- [x] Add orders relationship in Product model using hasManyThrough
-- [x] Create OrderRelationManager to display orders and order items for products
-- [x] Update ProductResource to include OrderRelationManager
-- [x] Create view for order items modal
+- [x] Create migration to add 'belum_dibayar' status to transactions table.
+- [x] Run migration to update database schema.
+- [x] Update CheckoutController to set status to 'belum_dibayar' for Midtrans payments.
+- [x] Update orders/index.blade.php to show "Bayar" button for 'belum_dibayar' status.

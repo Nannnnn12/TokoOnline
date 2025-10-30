@@ -47,7 +47,7 @@ class TransactionForm
                     ->columnSpanFull(),
                 Select::make('payment_method')
                     ->label('Metode Pembayaran')
-                    ->options(['cod' => 'Cod', 'midtrans' => 'Midtrans'])
+                    ->options(['cod' => 'Bayar di Tempat (COD)'])
                     ->default('cod')
                     ->required()
                     ->disabled(),

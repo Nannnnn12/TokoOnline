@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        @unless (session('show_success_modal'))
         <!-- Progress Bar -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             @if (session('error'))
@@ -156,36 +157,41 @@
                                 </label>
                             </div>
 
-                            <!-- Online Payment Option -->
+                            <!-- Midtrans Option -->
                             <div class="relative">
                                 <input id="midtrans" name="payment_method" type="radio" value="midtrans"
-                                    class="sr-only peer" disabled>
+                                    class="sr-only peer">
                                 <label for="midtrans"
-                                    class="flex items-center p-6 border-2 border-gray-200 rounded-xl cursor-not-allowed opacity-60 bg-gray-50">
-                                    <div class="flex items-center justify-center w-12 h-12 bg-gray-200 rounded-xl mr-4">
-                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                    class="flex items-center p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-yellow-300 hover:bg-yellow-50 transition-all duration-200 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 peer-checked:shadow-lg">
+                                    <div
+                                        class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mr-4 peer-checked:bg-blue-500">
+                                        <svg class="w-6 h-6 text-blue-600 peer-checked:text-white" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                                            </path>
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <div class="font-semibold text-gray-900 text-lg">Pembayaran Online</div>
-                                        <div class="text-gray-600 mt-1">Kartu kredit, transfer bank, dompet digital</div>
+                                        <div class="font-semibold text-gray-900 text-lg">Midtrans Payment</div>
+                                        <div class="text-gray-600 mt-1">Bayar online dengan berbagai metode pembayaran</div>
                                         <div class="flex items-center mt-2">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                Coming Soon
+                                                Secure Payment
                                             </span>
                                         </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="w-5 h-5 border-2 border-gray-300 rounded-full bg-gray-200"></div>
+                                        <div
+                                            class="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-blue-500 peer-checked:bg-blue-500 flex items-center justify-center">
+                                            <div class="w-3 h-3 bg-white rounded-full peer-checked:bg-white"></div>
+                                        </div>
                                     </div>
                                 </label>
                             </div>
@@ -301,6 +307,7 @@
                 </div>
             </form>
         </div>
+        @endunless
     </div>
     <!-- Success Modal -->
     @if (session('show_success_modal'))
@@ -395,8 +402,8 @@
             }
 
             function viewOrders() {
-                // You can add a route to view orders here
-                window.location.href = '{{ route('products.index') }}'; // Placeholder
+                // Redirect to orders page
+                window.location.href = '{{ route('orders.index') }}';
             }
 
             function closeModal() {

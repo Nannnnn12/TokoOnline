@@ -16,6 +16,7 @@ class Transaction extends Model
         'total',
         'notes',
         'payment_method',
+        'snap_token',
     ];
 
     protected $casts = [

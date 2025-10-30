@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+
 class CheckoutController extends Controller
 {
+
+
     public function index(Request $request)
     {
         // Check if it's a direct product checkout
@@ -75,7 +78,8 @@ class CheckoutController extends Controller
             $product = \App\Models\Product::findOrFail($request->product_id);
             $total = $product->sell_price * $request->quantity;
 
-            DB::transaction(function () use ($request, $product, $total) {
+            $transaction = null;
+            DB::transaction(function () use ($request, $product, $total, &$transaction) {
                 // Check stock availability
                 if ($product->stock < $request->quantity) {
                     throw new \Exception('Insufficient stock for product: ' . $product->product_name);
@@ -88,6 +92,7 @@ class CheckoutController extends Controller
                     'address' => $request->address,
                     'payment_method' => $request->payment_method,
                     'total' => $total,
+                    'status' => $request->payment_method === 'midtrans' ? 'belum_dibayar' : 'pending',
                 ]);
 
                 // Create transaction item
@@ -102,7 +107,27 @@ class CheckoutController extends Controller
                 $product->decrement('stock', $request->quantity);
             });
 
-            return redirect()->route('products.index')->with('success', 'Order placed successfully!');
+            if ($request->payment_method === 'midtrans') {
+                // Generate Midtrans snap token
+                $midtransService = app(\App\Services\MidtransServices::class);
+                $customer = [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => Auth::user()->phone ?? '',
+                ];
+                $snapResponse = $midtransService->createTransaction($transaction, $customer);
+
+                // Update transaction with snap token
+                $transaction->update(['snap_token' => $snapResponse['token']]);
+
+                return redirect()->route('payment.show', $transaction->order_code);
+            }
+
+            return redirect()->route('products.index')->with([
+                'show_success_modal' => true,
+                'order_code' => $transaction->order_code,
+                'order_total' => $total
+            ]);
         } elseif ($request->has('is_single_product')) {
             // Single product checkout from checkout page
             $request->validate([
@@ -129,6 +154,7 @@ class CheckoutController extends Controller
                     'address' => $request->address,
                     'payment_method' => $request->payment_method,
                     'total' => $total,
+                    'status' => $request->payment_method === 'midtrans' ? 'belum_dibayar' : 'pending',
                 ]);
 
                 // Create transaction item
@@ -142,6 +168,22 @@ class CheckoutController extends Controller
                 // Decrease product stock
                 $product->decrement('stock', $request->quantity);
             });
+
+            if ($request->payment_method === 'midtrans') {
+                // Generate Midtrans snap token
+                $midtransService = app(\App\Services\MidtransServices::class);
+                $customer = [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => Auth::user()->phone ?? '',
+                ];
+                $snapResponse = $midtransService->createTransaction($transaction, $customer);
+
+                // Update transaction with snap token
+                $transaction->update(['snap_token' => $snapResponse['token']]);
+
+                return redirect()->route('payment.show', $transaction->order_code);
+            }
 
             return redirect()->back()->with([
                 'show_success_modal' => true,
@@ -189,6 +231,7 @@ class CheckoutController extends Controller
                     'payment_method' => $request->payment_method,
                     'total' => $total,
                     'notes' => $request->notes,
+                    'status' => $request->payment_method === 'midtrans' ? 'belum_dibayar' : 'pending',
                 ]);
 
                 // Create transaction items and decrease stock
@@ -207,6 +250,22 @@ class CheckoutController extends Controller
                 // Remove items from cart
                 Cart::whereIn('id', $carts->pluck('id'))->delete();
             });
+
+            if ($request->payment_method === 'midtrans') {
+                // Generate Midtrans snap token
+                $midtransService = app(\App\Services\MidtransServices::class);
+                $customer = [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => Auth::user()->phone ?? '',
+                ];
+                $snapResponse = $midtransService->createTransaction($transaction, $customer);
+
+                // Update transaction with snap token
+                $transaction->update(['snap_token' => $snapResponse['token']]);
+
+                return redirect()->route('payment.show', $transaction->order_code);
+            }
 
             return redirect()->route('products.index')->with([
                 'show_success_modal' => true,

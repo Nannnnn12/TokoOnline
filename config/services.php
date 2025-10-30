@@ -39,5 +39,14 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URL'),
-    ]
+    ],
+
+    'midtrans' => [
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
+        'options' => [
+            // Additional cURL options can be added here
+        ],
+    ],
 ];

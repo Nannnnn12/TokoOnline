@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+
 use App\Models\Product;
 
 Route::get('/', function () {
@@ -37,8 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
 
+
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{transaction}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{transaction:order_code}', [OrderController::class, 'show'])->name('orders.show');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -51,6 +53,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::post('/midtrans/webhook', [App\Http\Controllers\MidtransWebhookController::class, 'handleWebhook'])->name('midtrans.webhook');
+Route::get('/payment/{orderCode}', [App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show')->middleware('auth');
 
 Route::middleware('admin')->group(function () {
     // Admin routes can be added here if needed

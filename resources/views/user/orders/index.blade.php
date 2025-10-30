@@ -28,7 +28,9 @@
                                 <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                                     <!-- Status Badge -->
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                                        @if($transaction->status == 'pending')
+                                        @if($transaction->status == 'belum_dibayar')
+                                            bg-red-100 text-red-800
+                                        @elseif($transaction->status == 'pending')
                                             bg-yellow-100 text-yellow-800
                                         @elseif($transaction->status == 'processing')
                                             bg-blue-100 text-blue-800
@@ -39,8 +41,22 @@
                                         @else
                                             bg-gray-100 text-gray-800
                                         @endif">
-                                        {{ ucfirst($transaction->status) }}
+                                        @if($transaction->status == 'belum_dibayar')
+                                            Belum Dibayar
+                                        @else
+                                            {{ ucfirst($transaction->status) }}
+                                        @endif
                                     </span>
+                                    <!-- Pay Button for Unpaid Midtrans Orders -->
+                                    @if($transaction->status == 'belum_dibayar' && $transaction->payment_method == 'midtrans')
+                                        <a href="{{ route('payment.show', $transaction->order_code) }}"
+                                           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                            </svg>
+                                            Bayar
+                                        </a>
+                                    @endif
                                     <!-- View Details Button -->
                                     <a href="{{ route('orders.show', $transaction) }}"
                                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">

@@ -23,7 +23,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'address' => 'nullable|string|max:500',
-            'profile_image' => 'nullable|file|mimes:jpeg,jpg,png|max:2048',
+            'profile_image' => 'nullable|file|mimes:jpeg,jpg,png|max:5048',
             'remove_profile_image' => 'nullable|boolean',
             'current_password' => 'nullable|required_with:new_password',
             'new_password' => 'nullable|min:8|confirmed',
@@ -59,7 +59,7 @@ class ProfileController extends Controller
         // Update password if provided
         if ($request->filled('new_password')) {
             if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+                return back()->withErrors(['current_password' => 'Password Saat ini Salah.']);
             }
 
             $user->update([
@@ -67,6 +67,6 @@ class ProfileController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Profil Berhasil di Update!');
     }
 }
