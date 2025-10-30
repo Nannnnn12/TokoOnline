@@ -39,7 +39,7 @@
                     @if ($store->instagram ?? false)
                         <a href="{{ $store->instagram }}" target="_blank"
                             class="text-gray-300 hover:text-pink-400 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28"
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
                                 aria-hidden="true" role="img">
                                 <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
                                     stroke-linejoin="round"
