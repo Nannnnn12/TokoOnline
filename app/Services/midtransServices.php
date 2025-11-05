@@ -1,32 +1,30 @@
-<?php // Berkas PHP yang mendefinisikan service gateway pembayaran Midtrans.
+<?php
+namespace App\Services;
+use App\Models\Transaction;
+use App\Models\TransactionItem;
+use Illuminate\Support\Arr;
+use Midtrans\Config;
+use Midtrans\Snap;
+use function App\Helpers\store;
 
-namespace App\Services; // Namespace untuk mengelompokkan kelas-kelas layer service.
-
-use App\Models\Transaction; // Model Transaction menyediakan data transaksi.
-use App\Models\TransactionItem; // Model TransactionItem merepresentasikan item transaksi.
-use Illuminate\Support\Arr; // Helper Arr memudahkan akses array yang aman.
-use Midtrans\Config; // Config dari SDK Midtrans menyimpan konfigurasi.
-use Midtrans\Snap; // Klien API Midtrans Snap.
-
-class MidtransServices // Kelas service yang membungkus interaksi dengan Midtrans Snap.
+class MidtransServices
 {
-    public function __construct() // Konstruktor menginisialisasi nilai konfigurasi Midtrans.
-    {
-        Config::$isProduction = (bool) config('services.midtrans.is_production', false); // Mengatur mode sandbox/production sesuai konfigurasi.
-        Config::$serverKey = config('services.midtrans.server_key'); // Mengisi server key dari konfigurasi.
-        Config::$clientKey = config('services.midtrans.client_key'); // Mengisi client key yang dipakai frontend.
-        Config::$isSanitized = true; // Memaksa sanitasi payload demi keamanan.
-        Config::$curlOptions = config('services.midtrans.options', []); // Memuat opsi cURL tambahan jika ada.
-        if (!isset(Config::$curlOptions[CURLOPT_HTTPHEADER])) { // Memastikan array header HTTP tersedia.
-            Config::$curlOptions[CURLOPT_HTTPHEADER] = []; // Menginisialisasi wadah header jika belum ada.
+    public function __construct(){
+        $store = store();
+        Config::$isProduction = (bool) ($store->is_production ?? false);
+        Config::$serverKey = $store->midtrans_server_key ?? '';
+        Config::$clientKey = $store->midtrans_client_key ?? '';
+        Config::$isSanitized = true;
+        Config::$curlOptions = config('services.midtrans.options', []);
+        if (!isset(Config::$curlOptions[CURLOPT_HTTPHEADER])) {
+            Config::$curlOptions[CURLOPT_HTTPHEADER] = [];
         }
     }
 
     /**
      * Membuat transaksi Snap dan mengembalikan payload.
      */
-    public function createTransaction(Transaction $transaction, array $customer): array // Menyusun payload transaksi untuk Midtrans Snap.
-    {
+    public function createTransaction(Transaction $transaction, array $customer): array {
         // Build transaction details
         $transactionDetails = [
             'order_id' => $transaction->order_code,

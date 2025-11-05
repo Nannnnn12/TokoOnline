@@ -26,14 +26,19 @@ class TransactionForm
                     ->disabled()
                     ->columnSpanFull(),
                 Select::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'belum_dibayar' => 'Belum Dibayar',
-                        'processing' => 'Processing',
-                        'shipped' => 'Shipped',
-                        'delivered' => 'Delivered',
-                        'cancelled' => 'Cancelled',
-                    ])
+                    ->options(function ($record) {
+                        $options = [
+                            'pending' => 'Pending',
+                            'processing' => 'Processing',
+                            'shipped' => 'Shipped',
+                            'delivered' => 'Delivered',
+                            'cancelled' => 'Cancelled',
+                        ];
+                        if ($record && $record->payment_method !== 'cod') {
+                            $options['belum_dibayar'] = 'Belum Dibayar';
+                        }
+                        return $options;
+                    })
                     ->default('pending')
                     ->required(),
                 TextInput::make('total')

@@ -99,18 +99,22 @@ class Setting extends Page
                             ->label('Shopee'),
                     ]),
 
-                Section::make('Homepage Settings')
+                Section::make('Midtrans Configuration')
                     ->schema([
-                        Toggle::make('show_homepage_button')
-                            ->label('Show Homepage Button')
-                            ->default(true)
-                            ->helperText('Show a button to visit the homepage from admin panel'),
+                        TextInput::make('midtrans_client_key')
+                            ->label('Midtrans Client Key')
+                            ->required(),
 
-                        TextInput::make('homepage_button_text')
-                            ->label('Homepage Button Text')
-                            ->default('Visit Homepage')
-                            ->helperText('Text for the homepage button'),
+                        TextInput::make('midtrans_server_key')
+                            ->label('Midtrans Server Key')
+                            ->required(),
+
+                        Toggle::make('is_production')
+                            ->label('Is Production')
+                            ->helperText('Aktifkan untuk mode produksi, nonaktifkan untuk sandbox'),
                     ]),
+
+                Section::make('Homepage')
             ])->columns(2)
             ->statePath('data');
     }

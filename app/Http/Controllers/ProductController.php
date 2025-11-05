@@ -28,15 +28,14 @@ class ProductController extends Controller
 
         // Sort options
         $sortBy = $request->get('sort', 'product_name');
-        $sortDirection = $request->get('direction', 'asc');
 
         switch ($sortBy) {
             case 'price':
-                $query->orderBy('sell_price', $sortDirection);
+                $query->orderBy('sell_price', 'desc');
                 break;
             case 'product_name':
             default:
-                $query->orderBy('product_name', $sortDirection);
+                $query->orderBy('product_name', 'asc');
                 break;
         }
 
