@@ -41,5 +41,22 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
+    'rajaongkir' => [
+    'key' => env('RAJAONGKIR_API_KEY'),
+    'base_url' => env('RAJAONGKIR_BASE_URL', 'https://rajaongkir.komerce.id/api/v1/'),
+    'auth_type' => env('RAJAONGKIR_AUTH_TYPE', 'header'),
+    'auth_header' => env('RAJAONGKIR_AUTH_HEADER', 'key'),
+
+    'endpoints' => [
+        'provinces' => 'destination/province',
+        'cities' => 'destination/city',
+        'districts' => 'destination/district',
+        'cost' => 'calculate/district/domestic-cost',
+    ],
+
+    'origin_city_id' => env('RAJAONGKIR_ORIGIN_CITY_ID', 469),
+    'origin_district_id' => env('RAJAONGKIR_ORIGIN_DISTRICT_ID'),
+    'timeout' => env('RAJAONGKIR_TIMEOUT', 15),
+],
 
 ];

@@ -49,6 +49,33 @@ class TransactionsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('province')
+                    ->label('Provinsi')
+                    ->toggleable(),
+                TextColumn::make('city')
+                    ->label('Kota')
+                    ->toggleable(),
+                TextColumn::make('district')
+                    ->label('Kecamatan')
+                    ->toggleable(),
+                TextColumn::make('courier')
+                    ->label('Kurir')
+                    ->badge()
+                    ->color('success')
+                    ->toggleable(),
+                TextColumn::make('courier_service')
+                    ->label('Layanan Kurir')
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                TextColumn::make('shipping_cost')
+                    ->label('Biaya Pengiriman')
+                    ->money('IDR')
+                    ->toggleable(),
+                TextColumn::make('tracking_number')
+                    ->label('Nomor Resi')
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('payment_method')
                     ->label('Metode Pembayaran')
                     ->badge()

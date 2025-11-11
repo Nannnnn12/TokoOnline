@@ -3,10 +3,10 @@
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <!-- Search and Filters Bar -->
             <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-12">
-                <form method="GET" action="{{ route('products.index') }}" class="space-y-6">
+                <div class="space-y-6">
                     <div class="flex flex-col lg:flex-row gap-6 items-end">
                         <!-- Search Bar -->
                         <div class="flex-1">
@@ -15,7 +15,8 @@
                             <div class="relative">
                                 <input type="text" name="search" id="search" value="{{ request('search') }}"
                                     placeholder="Cari produk favorit Anda..."
-                                    class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400">
+                                    class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400"
+                                    onchange="applyFilters()">
                                 <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -31,7 +32,8 @@
                                 <label for="category"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
                                 <select name="category" id="category"
-                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white">
+                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
+                                    onchange="applyFilters()">
                                     <option value="">Semua Kategori</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -47,25 +49,12 @@
                                 <label for="sort"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
                                 <select name="sort" id="sort"
-                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white">
+                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
+                                    onchange="applyFilters()">
                                     <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad
                                         A-Z</option>
                                     <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga</option>
                                 </select>
-                            </div>
-
-                            <!-- Filter Button -->
-                            <div class="flex flex-col">
-                                <button type="submit"
-                                    class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl hover:from-yellow-600 hover:to-yellow-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
-                                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
-                                        </path>
-                                    </svg>
-                                    Terapkan Filter
-                                </button>
                             </div>
                         </div>
 
@@ -76,7 +65,8 @@
                                 <label for="category_mobile"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
                                 <select name="category" id="category_mobile"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm">
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
+                                    onchange="applyFilters()">
                                     <option value="">Semua Kategori</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -92,32 +82,17 @@
                                 <label for="sort_mobile"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
                                 <select name="sort" id="sort_mobile"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm">
+                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
+                                    onchange="applyFilters()">
                                     <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad
                                         A-Z</option>
                                     <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga
                                     </option>
                                 </select>
                             </div>
-
-                            <!-- Mobile Filter Button -->
-                            <div class="flex flex-col">
-                                <button type="submit"
-                                    class="w-full px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl hover:from-yellow-600 hover:to-yellow-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
-                                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
-                                        </path>
-                                    </svg>
-                                    Terapkan
-                                </button>
-                            </div>
                         </div>
                     </div>
-
-
-                </form>
+                </div>
             </div>
 
             <!-- Products Grid -->
@@ -130,7 +105,7 @@
                 </div>
 
                 @if ($products->count() > 0)
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
                         @foreach ($products as $product)
                             <a href="{{ route('products.show', $product) }}"
                                 class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 block">
@@ -237,3 +212,29 @@
 
 
 @endsection
+
+<script>
+function applyFilters() {
+    const search = document.getElementById('search').value;
+    const category = document.getElementById('category').value;
+    const sort = document.getElementById('sort').value;
+
+    // Build query string
+    const params = new URLSearchParams();
+
+    if (search) params.append('search', search);
+    if (category) params.append('category', category);
+    if (sort) params.append('sort', sort);
+
+    // Redirect to the same page with filters
+    const url = '{{ route("products.index") }}' + (params.toString() ? '?' + params.toString() : '');
+    window.location.href = url;
+}
+
+// Add debounce for search input to avoid too many requests
+let searchTimeout;
+document.getElementById('search').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(applyFilters, 500); // Wait 500ms after user stops typing
+});
+</script>

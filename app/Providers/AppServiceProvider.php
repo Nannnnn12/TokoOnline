@@ -11,7 +11,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('store', function ($app) {
+            return \App\Models\Store::first();
+        });
     }
 
     /**

@@ -114,7 +114,13 @@ class Setting extends Page
                             ->helperText('Aktifkan untuk mode produksi, nonaktifkan untuk sandbox'),
                     ]),
 
-                Section::make('Homepage')
+                Section::make('RajaOngkir Configuration')
+                    ->schema([
+                        TextInput::make('rajaongkir_api_key')
+                            ->label('RajaOngkir API Key')
+                            ->required()
+                            ->helperText('API Key dari RajaOngkir untuk layanan pengiriman'),
+                    ])
             ])->columns(2)
             ->statePath('data');
     }

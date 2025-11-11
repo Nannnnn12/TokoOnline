@@ -1,3 +1,8 @@
-- [x] Fix typo in app/Models/Store.php fillable for 'midrans_server_key' to 'midtrans_server_key'
-- [x] Update app/Services/midtransServices.php constructor to fetch midtrans keys and is_production from store() helper instead of config
-- [x] Remove midtrans config from config/services.php since it's no longer used
+# Update Checkout Controller to Save Shipping Data
+
+## Tasks
+- [x] Update validation in CheckoutController store method to include province, city, district, postal_code, courier, courier_service, shipping_cost (made nullable to allow checkout without shipping selection)
+- [x] Modify Transaction creation in store method to save the new fields
+- [x] Update total calculation to include shipping_cost (product_total + shipping_cost) with null coalescing
+- [x] Apply changes to all checkout scenarios: direct product, single product from checkout page, and cart checkout
+- [ ] Test the checkout process to verify data is saved correctly in transactions table

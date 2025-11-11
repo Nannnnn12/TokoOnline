@@ -12,15 +12,24 @@ class Transaction extends Model
         'order_code',
         'customer_id',
         'address',
+        'province',
+        'city',
+        'district',
+        'postal_code',
+        'courier',
+        'courier_service',
+        'shipping_cost',
+        'tracking_number',
+        'payment_method',
         'status',
         'total',
         'notes',
-        'payment_method',
         'snap_token',
     ];
 
     protected $casts = [
         'total' => 'decimal:2',
+        'shipping_cost' => 'decimal:2',
     ];
 
     public function customer(): BelongsTo

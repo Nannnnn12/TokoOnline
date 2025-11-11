@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RajaOngkirController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
@@ -56,6 +57,11 @@ Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::clas
 
 Route::post('/midtrans/webhook', [App\Http\Controllers\MidtransWebhookController::class, 'handleWebhook'])->name('midtrans.webhook');
 Route::get('/payment/{orderCode}', [App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show')->middleware('auth');
+
+Route::get('/rajaongkir/provinces', [RajaOngkirController::class, 'getProvinces'])->name('rajaongkir.provinces');
+Route::get('/rajaongkir/cities', [RajaOngkirController::class, 'getCities'])->name('rajaongkir.cities');
+Route::get('/rajaongkir/districts', [RajaOngkirController::class, 'getDistricts'])->name('rajaongkir.districts');
+Route::post('/rajaongkir/cost', [RajaOngkirController::class, 'getShippingCost'])->name('rajaongkir.cost');
 
 Route::middleware('admin')->group(function () {
     // Admin routes can be added here if needed

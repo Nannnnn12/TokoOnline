@@ -25,6 +25,24 @@ class TransactionForm
                     ->required()
                     ->disabled()
                     ->columnSpanFull(),
+                TextInput::make('province')
+                    ->label('Provinsi')
+                    ->disabled(),
+                TextInput::make('city')
+                    ->label('Kota')
+                    ->disabled(),
+                TextInput::make('district')
+                    ->label('Kecamatan')
+                    ->disabled(),
+                TextInput::make('courier')
+                    ->label('Kurir')
+                    ->disabled(),
+                TextInput::make('courier_service')
+                    ->label('Layanan Kurir')
+                    ->disabled(),
+                TextInput::make('tracking_number')
+                    ->label('Nomor Resi')
+                    ->placeholder('Masukkan nomor resi pengiriman'),
                 Select::make('status')
                     ->options(function ($record) {
                         $options = [

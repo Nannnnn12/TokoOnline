@@ -8,11 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::where('customer_id', Auth::id())
-            ->with(['items.product'])
-            ->orderBy('created_at', 'desc')
+        $query = Transaction::where('customer_id', Auth::id())
+            ->with(['items.product']);
+
+        // Filter by status if provided
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $transactions = $query->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('user.orders.index', compact('transactions'));

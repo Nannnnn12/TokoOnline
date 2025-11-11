@@ -57,7 +57,23 @@
                     <div>
                         <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Alamat Pengiriman</h3>
                         <p class="mt-1 text-sm text-gray-900">
-                            {{ $transaction->customer->address ?? 'Alamat tidak disediakan' }}
+                            {{ $transaction->address ?? 'Alamat tidak disediakan' }}
+                        </p>
+                        @if($transaction->province || $transaction->city || $transaction->district)
+                            <p class="text-xs text-gray-600 mt-1">
+                                {{ $transaction->province }}, {{ $transaction->city }}, {{ $transaction->district }}
+                                @if($transaction->postal_code) - {{ $transaction->postal_code }}@endif
+                            </p>
+                        @endif
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Kurir & Layanan</h3>
+                        <p class="mt-1 text-sm text-gray-900">
+                            @if($transaction->courier && $transaction->courier_service)
+                                {{ strtoupper($transaction->courier) }} - {{ $transaction->courier_service }}
+                            @else
+                                Informasi kurir tidak tersedia
+                            @endif
                         </p>
                     </div>
                     <div>
@@ -131,13 +147,19 @@
             <div class="bg-gray-50 px-6 py-4">
                 <div class="flex justify-end">
                     <div class="w-full max-w-xs">
+                        @php
+                            $subtotal = $transaction->items->sum(function($item) {
+                                return $item->quantity * $item->price;
+                            });
+                            $shippingCost = $transaction->shipping_cost;
+                        @endphp
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Subtotal</span>
-                            <span>Rp {{ number_format($transaction->total, 0, ',', '.') }}</span>
+                            <span>Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Pengiriman</span>
-                            <span>Gratis</span>
+                            <span>{{ $shippingCost > 0 ? 'Rp ' . number_format($shippingCost, 0, ',', '.') : 'Gratis' }}</span>
                         </div>
                         <div class="border-t border-gray-300 pt-2">
                         <div class="flex justify-between text-lg font-semibold text-gray-900">

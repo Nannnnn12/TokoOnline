@@ -14,6 +14,7 @@ class Store extends Model
         'midtrans_client_key',
         'midtrans_server_key',
         'is_production',
+        'rajaongkir_api_key',
         'whatsapp',
         'tiktok',
         'facebook',

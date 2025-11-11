@@ -17,7 +17,33 @@ class CheckoutController extends Controller
 
     public function index(Request $request)
     {
-        // Check if it's a direct product checkout
+        // ✅ Daftar layanan pengiriman
+        $shippingMethods = [
+            ['code' => 'jne', 'name' => 'Jalur Nugraha Ekakurir (JNE)'],
+            ['code' => 'sicepat', 'name' => 'SiCepat Express'],
+            ['code' => 'ide', 'name' => 'ID Express'],
+            ['code' => 'sap', 'name' => 'Satria Antaran Prima'],
+            ['code' => 'jnt', 'name' => 'J&T Express'],
+            ['code' => 'ninja', 'name' => 'Ninja Xpress'],
+            ['code' => 'tiki', 'name' => 'TIKI'],
+            ['code' => 'lion', 'name' => 'Lion Parcel'],
+            ['code' => 'anteraja', 'name' => 'AnterAja'],
+            ['code' => 'pos', 'name' => 'POS Indonesia'],
+            ['code' => 'ncs', 'name' => 'Nusantara Card Semesta (NCS)'],
+            ['code' => 'rex', 'name' => 'Royal Express Indonesia (REX)'],
+            ['code' => 'rpx', 'name' => 'RPX Holding'],
+            ['code' => 'sentral', 'name' => 'Sentral Cargo'],
+            ['code' => 'star', 'name' => 'Star Cargo'],
+            ['code' => 'wahana', 'name' => 'Wahana Prestasi Logistik'],
+            ['code' => 'dse', 'name' => '21 Express (DSE)'],
+        ];
+
+        // ✅ Metode pembayaran
+        $paymentMethods = [
+            ['code' => 'midtrans', 'name' => 'Pay with Midtrans'],
+        ];
+
+        // ✅ Cek apakah checkout langsung dari produk tunggal
         if ($request->has('product_id')) {
             $productId = $request->input('product_id');
             $quantity = $request->input('quantity', 1);
@@ -25,22 +51,35 @@ class CheckoutController extends Controller
             $product = \App\Models\Product::findOrFail($productId);
             $total = $product->sell_price * $quantity;
 
-            // Create a temporary cart-like structure for single product
+            $defaultItemWeight = 1000; // 1kg in grams
+            $totalWeight = ($product->weight ?? $defaultItemWeight) * $quantity; // weight is already in grams
+
+            $originCityId = (int) config('services.rajaongkir.origin_city_id', 469);
+            $originDistrictId = config('services.rajaongkir.origin_district_id')
+                ? (int) config('services.rajaongkir.origin_district_id')
+                : null;
+
+            // Buat struktur "cart" sementara
             $singleItem = (object) [
                 'id' => 'single_' . $productId,
                 'product' => $product,
                 'quantity' => $quantity,
-                'total' => $total
+                'total' => $total,
             ];
 
             return view('user.checkout', [
                 'carts' => collect([$singleItem]),
                 'total' => $total,
-                'is_single_product' => true
+                'is_single_product' => true,
+                'shippingMethods' => $shippingMethods,
+                'paymentMethods' => $paymentMethods,
+                'totalWeight' => $totalWeight,
+                'originCityId' => $originCityId,
+                'originDistrictId' => $originDistrictId,
             ]);
         }
 
-        // Get selected cart items from request
+        // ✅ Checkout dari cart
         $selectedCartIds = $request->input('carts', []);
 
         if (empty($selectedCartIds)) {
@@ -56,12 +95,35 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Selected items not found.');
         }
 
-        $total = $carts->sum(function ($cart) {
-            return $cart->total;
+        $total = $carts->sum(fn($cart) => $cart->total);
+
+        // Default berat (gram) jika produk tidak punya berat
+        $defaultItemWeight = 1000; // gram
+
+        $totalWeight = $carts->sum(function ($cart) use ($defaultItemWeight) {
+            $weightPerItem = $cart->product->weight ?? $defaultItemWeight; // weight is already in grams
+            return $weightPerItem * $cart->quantity; // kalikan dengan qty
         });
 
-        return view('user.checkout', compact('carts', 'total'));
+        // Pastikan minimal 1kg
+        $totalWeight = max($totalWeight, $defaultItemWeight);
+
+        $originCityId = (int) config('services.rajaongkir.origin_city_id', 469);
+        $originDistrictId = config('services.rajaongkir.origin_district_id')
+            ? (int) config('services.rajaongkir.origin_district_id')
+            : null;
+
+        return view('user.checkout', compact(
+            'carts',
+            'total',
+            'shippingMethods',
+            'paymentMethods',
+            'totalWeight',
+            'originCityId',
+            'originDistrictId'
+        ));
     }
+
 
     public function store(Request $request)
     {
@@ -72,14 +134,25 @@ class CheckoutController extends Controller
                 'product_id' => 'required|exists:products,id',
                 'quantity' => 'required|integer|min:1',
                 'address' => 'required|string|max:500',
+                'province_id' => 'required',
+                'province' => 'required|string|max:255',
+                'city_id' => 'required',
+                'city' => 'required|string|max:255',
+                'district_id' => 'required',
+                'district' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:10',
+                'courier' => 'required|string|max:50',
+                'courier_service' => 'required|string|max:50',
+                'shipping_cost' => 'required|numeric|min:0',
                 'payment_method' => 'required|in:cod,midtrans',
             ]);
 
             $product = \App\Models\Product::findOrFail($request->product_id);
-            $total = $product->sell_price * $request->quantity;
+            $productTotal = $product->sell_price * $request->quantity;
+            $total = $productTotal + $request->shipping_cost;
 
             $transaction = null;
-            DB::transaction(function () use ($request, $product, $total, &$transaction) {
+            DB::transaction(function () use ($request, $product, $productTotal, $total, &$transaction) {
                 // Check stock availability
                 if ($product->stock < $request->quantity) {
                     throw new \Exception('Insufficient stock for product: ' . $product->product_name);
@@ -90,6 +163,13 @@ class CheckoutController extends Controller
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
                     'customer_id' => Auth::id(),
                     'address' => $request->address,
+                    'province' => $request->province,
+                    'city' => $request->city,
+                    'district' => $request->district,
+                    'postal_code' => $request->postal_code,
+                    'courier' => $request->courier,
+                    'courier_service' => $request->courier_service,
+                    'shipping_cost' => $request->shipping_cost,
                     'payment_method' => $request->payment_method,
                     'total' => $total,
                     'status' => $request->payment_method === 'midtrans' ? 'belum_dibayar' : 'pending',
@@ -132,16 +212,27 @@ class CheckoutController extends Controller
             // Single product checkout from checkout page
             $request->validate([
                 'address' => 'required|string|max:500',
+                'province_id' => 'required',
+                'province' => 'required|string|max:255',
+                'city_id' => 'required',
+                'city' => 'required|string|max:255',
+                'district_id' => 'required',
+                'district' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:10',
+                'courier' => 'required|string|max:50',
+                'courier_service' => 'required|string|max:50',
+                'shipping_cost' => 'required|numeric|min:0',
                 'payment_method' => 'required|in:cod,midtrans',
                 'product_id' => 'required|exists:products,id',
                 'quantity' => 'required|integer|min:1',
             ]);
 
             $product = \App\Models\Product::findOrFail($request->product_id);
-            $total = $product->sell_price * $request->quantity;
+            $productTotal = $product->sell_price * $request->quantity;
+            $total = $productTotal + $request->shipping_cost;
 
             $transaction = null;
-            DB::transaction(function () use ($request, $product, $total, &$transaction) {
+            DB::transaction(function () use ($request, $product, $productTotal, $total, &$transaction) {
                 // Check stock availability
                 if ($product->stock < $request->quantity) {
                     throw new \Exception('Insufficient stock for product: ' . $product->product_name);
@@ -152,6 +243,13 @@ class CheckoutController extends Controller
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
                     'customer_id' => Auth::id(),
                     'address' => $request->address,
+                    'province' => $request->province,
+                    'city' => $request->city,
+                    'district' => $request->district,
+                    'postal_code' => $request->postal_code,
+                    'courier' => $request->courier,
+                    'courier_service' => $request->courier_service,
+                    'shipping_cost' => $request->shipping_cost,
                     'payment_method' => $request->payment_method,
                     'total' => $total,
                     'status' => $request->payment_method === 'midtrans' ? 'belum_dibayar' : 'pending',
@@ -194,6 +292,16 @@ class CheckoutController extends Controller
             // Cart checkout
             $request->validate([
                 'address' => 'required|string|max:500',
+                'province_id' => 'required',
+                'province' => 'required|string|max:255',
+                'city_id' => 'required',
+                'city' => 'required|string|max:255',
+                'district_id' => 'required',
+                'district' => 'required|string|max:255',
+                'postal_code' => 'required|string|max:10',
+                'courier' => 'required|string|max:50',
+                'courier_service' => 'required|string|max:50',
+                'shipping_cost' => 'required|numeric|min:0',
                 'payment_method' => 'required|in:cod,midtrans',
                 'notes' => 'nullable|string|max:500',
                 'carts' => 'required|array|min:1',
@@ -210,12 +318,13 @@ class CheckoutController extends Controller
                 return redirect()->route('cart.index')->with('error', 'Selected items not found.');
             }
 
-            $total = $carts->sum(function ($cart) {
+            $productTotal = $carts->sum(function ($cart) {
                 return $cart->total;
             });
+            $total = $productTotal + $request->shipping_cost;
 
             $transaction = null;
-            DB::transaction(function () use ($request, $carts, $total, &$transaction) {
+            DB::transaction(function () use ($request, $carts, $productTotal, $total, &$transaction) {
                 // Check stock availability for all products
                 foreach ($carts as $cart) {
                     if ($cart->product->stock < $cart->quantity) {
@@ -228,6 +337,13 @@ class CheckoutController extends Controller
                     'order_code' => 'ORD-' . strtoupper(Str::random(8)),
                     'customer_id' => Auth::id(),
                     'address' => $request->address,
+                    'province' => $request->province,
+                    'city' => $request->city,
+                    'district' => $request->district,
+                    'postal_code' => $request->postal_code,
+                    'courier' => $request->courier,
+                    'courier_service' => $request->courier_service,
+                    'shipping_cost' => $request->shipping_cost,
                     'payment_method' => $request->payment_method,
                     'total' => $total,
                     'notes' => $request->notes,
