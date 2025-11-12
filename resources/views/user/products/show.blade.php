@@ -8,16 +8,20 @@
                 <div class="space-y-6">
                     <!-- Main Image Container -->
                     <div class="relative group">
-                        <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                             @if ($product->images->count() > 0)
                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
-                                    alt="{{ $product->product_name }}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500" id="main-image"
+                                    alt="{{ $product->product_name }}"
+                                    class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                                    id="main-image"
                                     onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
                             @else
-                                <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                                <div
+                                    class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                                     <div class="text-center">
-                                        <svg class="w-32 h-32 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-32 h-32 text-gray-400 mx-auto mb-4" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                                             </path>
@@ -29,9 +33,11 @@
                         </div>
 
                         <!-- Zoom Icon Overlay -->
-                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div
+                            class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
                     </div>
@@ -40,7 +46,8 @@
                     @if ($product->images->count() > 1)
                         <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
                             @foreach ($product->images as $index => $image)
-                                <button onclick="changeImage('{{ asset('storage/' . $image->image_path) }}', {{ $index }})"
+                                <button
+                                    onclick="changeImage('{{ asset('storage/' . $image->image_path) }}', {{ $index }})"
                                     class="aspect-square bg-gray-100 rounded-lg sm:rounded-xl overflow-hidden border-2 {{ $index === 0 ? 'border-yellow-500 shadow-lg' : 'border-transparent hover:border-yellow-400' }} transition-all duration-200 hover:shadow-md"
                                     id="thumb-{{ $index }}">
                                     <img src="{{ asset('storage/' . $image->image_path) }}"
@@ -54,14 +61,18 @@
                     <!-- Image Navigation Arrows (if more than 5 images) -->
                     @if ($product->images->count() > 5)
                         <div class="flex justify-center space-x-2 mt-4">
-                            <button onclick="scrollThumbnails('left')" class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
+                            <button onclick="scrollThumbnails('left')"
+                                class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
                                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7"></path>
                                 </svg>
                             </button>
-                            <button onclick="scrollThumbnails('right')" class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
+                            <button onclick="scrollThumbnails('right')"
+                                class="p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow">
                                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                    </path>
                                 </svg>
                             </button>
                         </div>
@@ -94,14 +105,38 @@
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->product_name }}</h1>
                         <p class="text-xl font-semibold text-yellow-600 mb-4">Rp
                             {{ number_format($product->sell_price, 0, ',', '.') }}</p>
-                        <p class="text-sm text-gray-600 mb-4">Stock: {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
+                        <p class="text-sm text-gray-600 mb-4">Stock:
+                            {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
+                        <div class="flex items-center space-x-1">
+                            <div class="flex text-yellow-400">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= round($product->reviews_avg_rating ?? 0))
+                                        <!-- Full star -->
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @else
+                                        <!-- Empty star -->
+                                        <svg class="w-4 h-4 fill-gray-300" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span
+                                class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-lg p-6 shadow-sm">
                         <div class="flex items-center mb-4">
-                            <div class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mr-3">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mr-3">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <h3 class="text-xl font-bold text-gray-900">Deskripsi Produk</h3>
@@ -114,8 +149,8 @@
                                     $paragraphs = explode('<br />', $description);
                                 @endphp
 
-                                @foreach($paragraphs as $paragraph)
-                                    @if(trim($paragraph))
+                                @foreach ($paragraphs as $paragraph)
+                                    @if (trim($paragraph))
                                         <p class="text-base leading-relaxed">{{ $paragraph }}</p>
                                     @endif
                                 @endforeach
@@ -138,7 +173,8 @@
                                                     d="M20 12H4"></path>
                                             </svg>
                                         </button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}"
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                            max="{{ $product->stock }}"
                                             class="w-20 text-center px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
                                             onchange="updateCheckoutQuantity({{ $product->id }})">
                                         <button type="button" onclick="incrementQuantity()"
@@ -152,13 +188,14 @@
                                 </div>
 
                                 <div class="space-y-3">
-                                    @if($product->stock > 0)
+                                    @if ($product->stock > 0)
                                         <button type="submit"
                                             class="w-full bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium">
                                             Tambah ke Keranjang
                                         </button>
 
-                                        <a href="{{ route('checkout.index', ['product_id' => $product->id, 'quantity' => 1]) }}" id="checkout-link"
+                                        <a href="{{ route('checkout.index', ['product_id' => $product->id, 'quantity' => 1]) }}"
+                                            id="checkout-link"
                                             class="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium inline-block text-center">
                                             <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -258,128 +295,129 @@
         }
     </script>
 
-<!-- Cart Success Modal -->
-@if(session('show_cart_modal'))
-<div id="cartModal" class="fixed inset-0 flex items-center justify-center z-50 p-4">
-        <div
-            class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-100">
-            <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-t-2xl p-6 text-center">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-white">
-                    Produk {{ ucfirst(session('cart_action')) }}!
-                </h3>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="p-6">
-                <div class="text-center mb-6">
-                    <p class="text-gray-600 mb-4">
-                        "{{ session('product_name') }}" Telah Berhasil ditambahkan {{ session('cart_action') }} ke Keranjangmu
-                        @if (session('cart_action') == 'added')
-                            with quantity {{ session('quantity') }}
-                        @else
-                            (Jumlah Bertambah {{ session('quantity') }})
-                        @endif
-                        .
-                    </p>
-
-                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
-                        <div class="flex items-center justify-center space-x-2 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span>Berhasil Tambah Ke Keranjan</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                            </svg>
-                            Lanjutkan Belanja atau Proses Checkout
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                                </path>
-                            </svg>
-                           Lihat Keranjang Anda untuk melihat semua item
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                    <button onclick="continueShopping()"
-                        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Cart Success Modal -->
+    @if (session('show_cart_modal'))
+        <div id="cartModal" class="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div
+                class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-100">
+                <!-- Modal Header -->
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-t-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        Lanjutkan Belanja
-                    </button>
-                    <button onclick="viewCart()"
-                        class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13l-1.1-5M7 13h10m0 0v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8z">
-                            </path>
-                        </svg>
-                        Lihat Keranjang
-                    </button>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">
+                        Produk {{ ucfirst(session('cart_action')) }}!
+                    </h3>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <div class="text-center mb-6">
+                        <p class="text-gray-600 mb-4">
+                            "{{ session('product_name') }}" Telah Berhasil ditambahkan {{ session('cart_action') }} ke
+                            Keranjangmu
+                            @if (session('cart_action') == 'added')
+                                with quantity {{ session('quantity') }}
+                            @else
+                                (Jumlah Bertambah {{ session('quantity') }})
+                            @endif
+                            .
+                        </p>
+
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <div class="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Berhasil Tambah Ke Keranjan</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                                Lanjutkan Belanja atau Proses Checkout
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                    </path>
+                                </svg>
+                                Lihat Keranjang Anda untuk melihat semua item
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-3">
+                        <button onclick="continueShopping()"
+                            class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                            Lanjutkan Belanja
+                        </button>
+                        <button onclick="viewCart()"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13l-1.1-5M7 13h10m0 0v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8z">
+                                </path>
+                            </svg>
+                            Lihat Keranjang
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function continueShopping() {
-            window.location.href = '{{ route('products.index') }}';
-        }
-
-        function viewCart() {
-            window.location.href = '{{ route('cart.index') }}';
-        }
-
-        function closeCartModal() {
-            const modal = document.getElementById('cartModal');
-            if (modal) {
-                modal.style.display = 'none';
+        <script>
+            function continueShopping() {
+                window.location.href = '{{ route('products.index') }}';
             }
-        }
 
-        // Close modal when clicking outside
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('cartModal');
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        closeCartModal();
-                    }
-                });
-
-                // Auto-close after 5 seconds
-                setTimeout(function() {
-                    const modalCheck = document.getElementById('cartModal');
-                    if (modalCheck && modalCheck.style.display !== 'none') {
-                        closeCartModal();
-                    }
-                }, 5000);
+            function viewCart() {
+                window.location.href = '{{ route('cart.index') }}';
             }
-        });
-    </script>
-@endif
+
+            function closeCartModal() {
+                const modal = document.getElementById('cartModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // Close modal when clicking outside
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('cartModal');
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            closeCartModal();
+                        }
+                    });
+
+                    // Auto-close after 5 seconds
+                    setTimeout(function() {
+                        const modalCheck = document.getElementById('cartModal');
+                        if (modalCheck && modalCheck.style.display !== 'none') {
+                            closeCartModal();
+                        }
+                    }, 5000);
+                }
+            });
+        </script>
+    @endif
 @endsection

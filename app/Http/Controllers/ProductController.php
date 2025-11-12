@@ -10,7 +10,9 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['category', 'images'])->where('status', 'active');
+        $query = Product::with(['category', 'images'])
+            ->withAvg('reviews', 'rating')
+            ->where('status', 'active');
 
         // Filter by category
         if ($request->has('category') && $request->category) {
@@ -20,9 +22,9 @@ class ProductController extends Controller
         // Search by name or description
         if ($request->has('search') && $request->search) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('product_name', 'like', '%' . $search . '%')
-                  ->orWhere('description', 'like', '%' . $search . '%');
+                    ->orWhere('description', 'like', '%' . $search . '%');
             });
         }
 
@@ -55,6 +57,7 @@ class ProductController extends Controller
         $product->load(['category', 'images']);
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
+            ->withAvg('reviews', 'rating')
             ->where('status', 'active')
             ->limit(4)
             ->get();

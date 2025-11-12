@@ -40,6 +40,10 @@ class Product extends Model
     {
         return 'slug';
     }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     public function category()
     {
