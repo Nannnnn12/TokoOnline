@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Transaction;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class RajaOngkirServiceProvider extends ServiceProvider
 {
@@ -116,6 +118,15 @@ class RajaOngkirServiceProvider extends ServiceProvider
                             array_filter($payload, fn($value) => $value !== null && $value !== '')
                         );
                 }
+                public function waybill(array $payload)
+                {
+                    return $this->http()
+                        ->asForm()
+                        ->post(
+                            $this->buildEndpoint('waybill'),
+                            array_filter($payload, fn($value) => $value !== null && $value !== '')
+                        );
+                }
             };
         });
     }
@@ -125,6 +136,11 @@ class RajaOngkirServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Transaction::saving(function ($transaction) {
+        if ($transaction->isDirty('status') && $transaction->status === 'shipped' && !$transaction->tracking_number) {
+            $courier = $transaction->courier ?? 'UNKNOWN';
+            $transaction->tracking_number = strtoupper($courier) . '-' . $transaction->id . '-' . strtoupper(Str::random(6));
+        }
+    });
     }
 }

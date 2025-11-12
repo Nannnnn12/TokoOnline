@@ -41,6 +41,14 @@ class MidtransServices
                 'name' => $item->product->product_name,
             ];
         }
+        if (!empty($transaction->shipping_cost) && $transaction->shipping_cost > 0) {
+        $itemDetails[] = [
+            'id' => 'shipping',
+            'price' => $transaction->shipping_cost,
+            'quantity' => 1,
+            'name' => 'Biaya Pengiriman',
+        ];
+    }
 
         // Build customer details
         $customerDetails = [

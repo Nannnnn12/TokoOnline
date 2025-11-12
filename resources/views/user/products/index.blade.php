@@ -5,95 +5,86 @@
 
         <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <!-- Search and Filters Bar -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-12">
-                <div class="space-y-6">
-                    <div class="flex flex-col lg:flex-row gap-6 items-end">
-                        <!-- Search Bar -->
-                        <div class="flex-1">
-                            <label for="search" class="block text-sm font-semibold text-gray-700 mb-2">Cari
-                                Produk:</label>
-                            <div class="relative">
-                                <input type="text" name="search" id="search" value="{{ request('search') }}"
-                                    placeholder="Cari produk favorit Anda..."
-                                    class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400"
-                                    onchange="applyFilters()">
-                                <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- Desktop Filters -->
-                        <div class="hidden lg:flex gap-6 items-end">
-                            <!-- Category Filter -->
-                            <div class="flex flex-col">
-                                <label for="category"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
-                                <select name="category" id="category"
-                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
-                                    onchange="applyFilters()">
-                                    <option value="">Semua Kategori</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ request('category') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->category_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Sort Filter -->
-                            <div class="flex flex-col">
-                                <label for="sort"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
-                                <select name="sort" id="sort"
-                                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
-                                    onchange="applyFilters()">
-                                    <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad
-                                        A-Z</option>
-                                    <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Mobile Filters Row -->
-                        <div class="lg:hidden grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <!-- Category Filter -->
-                            <div class="flex flex-col">
-                                <label for="category_mobile"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
-                                <select name="category" id="category_mobile"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
-                                    onchange="applyFilters()">
-                                    <option value="">Semua Kategori</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ request('category') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->category_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Sort Filter -->
-                            <div class="flex flex-col">
-                                <label for="sort_mobile"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
-                                <select name="sort" id="sort_mobile"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
-                                    onchange="applyFilters()">
-                                    <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad
-                                        A-Z</option>
-                                    <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 sm:p-8 mb-12">
+    <div class="space-y-6">
+        <div class="flex flex-col lg:flex-row gap-6 lg:items-end">
+            <!-- Search Bar -->
+            <div class="w-full lg:flex-1">
+                <label for="search" class="block text-sm font-semibold text-gray-700 mb-2">Cari Produk:</label>
+                <div class="relative">
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="Cari produk favorit Anda..."
+                        class="w-full pl-10 pr-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400"
+                        onchange="applyFilters()">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </div>
             </div>
+
+            <!-- Desktop Filters -->
+            <div class="hidden lg:flex gap-6 items-end">
+                <!-- Category Filter -->
+                <div class="flex flex-col">
+                    <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
+                    <select name="category" id="category"
+                        class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
+                        onchange="applyFilters()">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->category_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Sort Filter -->
+                <div class="flex flex-col">
+                    <label for="sort" class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
+                    <select name="sort" id="sort"
+                        class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white"
+                        onchange="applyFilters()">
+                        <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad A-Z</option>
+                        <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Mobile Filters -->
+            <div class="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full">
+                <!-- Category Filter -->
+                <div class="flex flex-col">
+                    <label for="category_mobile" class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
+                    <select name="category" id="category_mobile"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
+                        onchange="applyFilters()">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->category_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Sort Filter -->
+                <div class="flex flex-col">
+                    <label for="sort_mobile" class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
+                    <select name="sort" id="sort_mobile"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
+                        onchange="applyFilters()">
+                        <option value="product_name" {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad A-Z</option>
+                        <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Harga</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
             <!-- Products Grid -->
             <div class="bg-white/50 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20">

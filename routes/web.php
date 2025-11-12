@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ReviewController;
 use App\Models\Product;
 
 Route::get('/', function () {
@@ -46,6 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/review/{transactionId}/{productId}', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::get('/review/{review}', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/review/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+
+
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/');
@@ -62,6 +68,7 @@ Route::get('/rajaongkir/provinces', [RajaOngkirController::class, 'getProvinces'
 Route::get('/rajaongkir/cities', [RajaOngkirController::class, 'getCities'])->name('rajaongkir.cities');
 Route::get('/rajaongkir/districts', [RajaOngkirController::class, 'getDistricts'])->name('rajaongkir.districts');
 Route::post('/rajaongkir/cost', [RajaOngkirController::class, 'getShippingCost'])->name('rajaongkir.cost');
+Route::post('rajaongkir/getWaybill', [RajaOngkirController::class, 'getWaybill'])->name('rajaongkir.getWaybill');
 
 Route::middleware('admin')->group(function () {
     // Admin routes can be added here if needed

@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Transactions\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Illuminate\Support\Str;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Illuminate\Support\Facades\Http;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\SelectColumn;
@@ -79,7 +81,7 @@ class TransactionsTable
                 TextColumn::make('payment_method')
                     ->label('Metode Pembayaran')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'midtrans' => 'info',
                         default => 'warning',
                     }),
