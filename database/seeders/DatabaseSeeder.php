@@ -22,5 +22,9 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
+        $this->call([
+            ReviewSeeder::class,
+        ]);
+
     }
 }

@@ -151,14 +151,14 @@
             }
         }
 
-        // Star rating logic
+        // Star rating logic (reversed: 5 stars on left)
         const starButtons = document.querySelectorAll('.star-btn');
         const ratingInput = document.getElementById('rating-input');
         let currentRating = parseInt(ratingInput.value) || 0;
 
         function updateStars(rating) {
             starButtons.forEach((button, index) => {
-                if (index < rating) {
+                if ((5 - index) <= rating) {
                     button.classList.add('text-yellow-500');
                     button.classList.remove('text-gray-300', 'text-yellow-400');
                 } else {
@@ -172,8 +172,9 @@
 
         starButtons.forEach((button, index) => {
             button.addEventListener('mouseenter', () => {
+                const previewRating = 5 - index;
                 starButtons.forEach((btn, i) => {
-                    if (i <= index) {
+                    if ((5 - i) <= previewRating) {
                         btn.classList.add('text-yellow-400');
                         btn.classList.remove('text-gray-300');
                     } else {
@@ -188,7 +189,7 @@
             });
 
             button.addEventListener('click', () => {
-                currentRating = index + 1;
+                currentRating = 5 - index;
                 ratingInput.value = currentRating;
                 updateStars(currentRating);
             });

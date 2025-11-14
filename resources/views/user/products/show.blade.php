@@ -110,7 +110,8 @@
                         <p class="text-sm text-gray-600 mb-4">Stock:
                             {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
                         @if ($product->transaction_items_sum_quantity > 0)
-                            <p class="text-sm text-gray-600 mb-4">{{ $product->transaction_items_sum_quantity }} produk terjual</p>
+                            <p class="text-sm text-gray-600 mb-4">{{ $product->transaction_items_sum_quantity }} produk
+                                terjual</p>
                         @else
                             <p class="text-sm text-gray-600 mb-4">Belum terjual</p>
                         @endif
@@ -182,7 +183,7 @@
                                         </button>
                                         <input type="number" id="quantity" name="quantity" value="1" min="1"
                                             max="{{ $product->stock }}"
-                                            class="w-20 text-center px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
+                                            class="no-spinner w-20 text-center px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500"
                                             onchange="updateCheckoutQuantity({{ $product->id }})">
                                         <button type="button" onclick="incrementQuantity()"
                                             class="p-2 border border-gray-300 rounded-md hover:bg-gray-50">
@@ -246,7 +247,11 @@
 
     <!-- Customer Reviews Section -->
     <div id="reviews-section">
-        @include('user.products.partials.reviews', ['product' => $product, 'sortBy' => $sortBy, 'totalReviewsCount' => $totalReviewsCount])
+        @include('user.products.partials.reviews', [
+            'product' => $product,
+            'sortBy' => $sortBy,
+            'totalReviewsCount' => $totalReviewsCount,
+        ])
     </div>
 
     <script>
@@ -256,27 +261,28 @@
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('filter-btn') || e.target.closest('.filter-btn')) {
                     e.preventDefault();
-                    const button = e.target.classList.contains('filter-btn') ? e.target : e.target.closest('.filter-btn');
+                    const button = e.target.classList.contains('filter-btn') ? e.target : e.target.closest(
+                        '.filter-btn');
                     const sortValue = button.getAttribute('data-sort');
                     const url = new URL(window.location);
                     url.searchParams.set('sort', sortValue);
 
                     fetch(url.toString(), {
-                        method: 'GET',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                        },
-                    })
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('reviews-section').innerHTML = html;
-                        // Update URL without page reload
-                        window.history.pushState({}, '', url.toString());
-                    })
-                    .catch(error => {
-                        console.error('Error loading reviews:', error);
-                    });
+                            method: 'GET',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            },
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.getElementById('reviews-section').innerHTML = html;
+                            // Update URL without page reload
+                            window.history.pushState({}, '', url.toString());
+                        })
+                        .catch(error => {
+                            console.error('Error loading reviews:', error);
+                        });
                 }
             });
         });

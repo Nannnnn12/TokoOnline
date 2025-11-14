@@ -73,7 +73,12 @@
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center space-x-3">
-                                            <h4 class="text-lg font-semibold text-gray-900">{{ $review->user->name }}</h4>
+                                            <h4 class="text-lg font-semibold text-gray-900">
+                                                {{ $review->user->name }}
+                                                @if ($review->user_id == auth()->id())
+                                                    <span class="text-sm font-normal text-gray-500">(you)</span>
+                                                @endif
+                                            </h4>
                                             <div class="flex text-yellow-400">
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     @if ($i <= $review->rating)

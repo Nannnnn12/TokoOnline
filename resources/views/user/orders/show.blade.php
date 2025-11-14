@@ -184,7 +184,7 @@
                     <h2 class="text-lg font-semibold text-gray-900">Status Pesanan</h2>
                     @if (in_array($transaction->status, ['shipped', 'delivered']))
                         <div class="flex items-center space-x-3">
-                            <h3 id="tracking-label" class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                        <h3 icd="tracking-label" class="text-sm font-medium text-gray-500 uppercase tracking-wide">
                                 Kode Resi:
                             </h3>
 
