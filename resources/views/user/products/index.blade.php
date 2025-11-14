@@ -68,7 +68,7 @@
                                     class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>
                                 <select name="category" id="category_mobile"
                                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
-                                    onchange="applyFilters()">
+                                    onchange="applyFiltersMobile()">
                                     <option value="">Semua Kategori</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -85,7 +85,7 @@
                                     class="block text-sm font-semibold text-gray-700 mb-2">Urutkan:</label>
                                 <select name="sort" id="sort_mobile"
                                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 bg-white text-sm"
-                                    onchange="applyFilters()">
+                                    onchange="applyFiltersMobile()">
                                     <option value="product_name"
                                         {{ request('sort', 'product_name') == 'product_name' ? 'selected' : '' }}>Abjad A-Z
                                     </option>
@@ -235,6 +235,7 @@
 @endsection
 
 <script>
+    // Desktop filters function
     function applyFilters() {
         const search = document.getElementById('search').value;
         const category = document.getElementById('category').value;
@@ -252,10 +253,35 @@
         window.location.href = url;
     }
 
+    // Mobile filters function
+    function applyFiltersMobile() {
+        const search = document.getElementById('search').value;
+        const category = document.getElementById('category_mobile').value;
+        const sort = document.getElementById('sort_mobile').value;
+
+        // Build query string
+        const params = new URLSearchParams();
+
+        if (search) params.append('search', search);
+        if (category) params.append('category', category);
+        if (sort) params.append('sort', sort);
+
+        // Redirect to the same page with filters
+        const url = '{{ route('products.index') }}' + (params.toString() ? '?' + params.toString() : '');
+        window.location.href = url;
+    }
+
     // Add debounce for search input to avoid too many requests
     let searchTimeout;
     document.getElementById('search').addEventListener('input', function() {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(applyFilters, 500); // Wait 500ms after user stops typing
+        searchTimeout = setTimeout(function() {
+            // Check if we're on mobile or desktop and call appropriate function
+            if (window.innerWidth < 1024) {
+                applyFiltersMobile();
+            } else {
+                applyFilters();
+            }
+        }, 500); // Wait 500ms after user stops typing
     });
 </script>
