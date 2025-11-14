@@ -13,7 +13,7 @@ use App\Models\Product;
 
 Route::get('/', function () {
     $store = App\Models\Store::first();
-    $products = Product::with(['category', 'images'])->where('status', 'active')->limit(6)->get();
+    $products = Product::with(['category', 'images'])->withAvg('reviews', 'rating')->where('status', 'active')->limit(6)->get();
     return view('user.homepage', compact('store', 'products'));
 })->name('home');
 

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Ulasan - ' . $review->product->product_name . ' - Toko Online')
+
 @section('content')
     <div class="min-h-screen bg-gray-50 py-10">
         <div class="max-w-4xl mx-auto">

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Checkout - Toko Online')
+
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         @unless (session('show_success_modal'))

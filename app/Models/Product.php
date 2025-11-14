@@ -59,4 +59,9 @@ class Product extends Model
     {
         return $this->hasManyThrough(Transaction::class, TransactionItem::class, 'product_id', 'id', 'id', 'transaction_id');
     }
+
+    public function transactionItems()
+    {
+        return $this->hasMany(TransactionItem::class);
+    }
 }

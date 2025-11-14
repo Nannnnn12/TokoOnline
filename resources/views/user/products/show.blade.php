@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $product->product_name . ' - Toko Online')
+
 @section('content')
     <div class="min-h-screen bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,6 +109,11 @@
                             {{ number_format($product->sell_price, 0, ',', '.') }}</p>
                         <p class="text-sm text-gray-600 mb-4">Stock:
                             {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
+                        @if ($product->transaction_items_sum_quantity > 0)
+                            <p class="text-sm text-gray-600 mb-4">{{ $product->transaction_items_sum_quantity }} produk terjual</p>
+                        @else
+                            <p class="text-sm text-gray-600 mb-4">Belum terjual</p>
+                        @endif
                         <div class="flex items-center space-x-1">
                             <div class="flex text-yellow-400">
                                 @for ($i = 1; $i <= 5; $i++)
@@ -237,7 +244,43 @@
         </div>
     </div>
 
+    <!-- Customer Reviews Section -->
+    <div id="reviews-section">
+        @include('user.products.partials.reviews', ['product' => $product, 'sortBy' => $sortBy, 'totalReviewsCount' => $totalReviewsCount])
+    </div>
+
     <script>
+        // AJAX for review filtering
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use event delegation to handle dynamically loaded buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('filter-btn') || e.target.closest('.filter-btn')) {
+                    e.preventDefault();
+                    const button = e.target.classList.contains('filter-btn') ? e.target : e.target.closest('.filter-btn');
+                    const sortValue = button.getAttribute('data-sort');
+                    const url = new URL(window.location);
+                    url.searchParams.set('sort', sortValue);
+
+                    fetch(url.toString(), {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                        },
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('reviews-section').innerHTML = html;
+                        // Update URL without page reload
+                        window.history.pushState({}, '', url.toString());
+                    })
+                    .catch(error => {
+                        console.error('Error loading reviews:', error);
+                    });
+                }
+            });
+        });
+
         function changeImage(imageSrc, index) {
             document.getElementById('main-image').src = imageSrc;
 

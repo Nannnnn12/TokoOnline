@@ -12,6 +12,7 @@ class ProductController extends Controller
     {
         $query = Product::with(['category', 'images'])
             ->withAvg('reviews', 'rating')
+            ->withSum('transactionItems', 'quantity')
             ->where('status', 'active');
 
         // Filter by category
@@ -47,21 +48,60 @@ class ProductController extends Controller
         return view('user.products.index', compact('products', 'categories'));
     }
 
-    public function show(Product $product)
+    public function show(Product $product, Request $request)
     {
         // Check if product is active
         if ($product->status !== 'active') {
             abort(404);
         }
 
-        $product->load(['category', 'images']);
+        $sortBy = $request->get('sort', 'all');
+
+        $reviewsQuery = $product->reviews()->with('user');
+
+        switch ($sortBy) {
+            case 'rating_5':
+                $reviewsQuery->where('rating', 5);
+                break;
+            case 'rating_4':
+                $reviewsQuery->where('rating', 4);
+                break;
+            case 'rating_3':
+                $reviewsQuery->where('rating', 3);
+                break;
+            case 'rating_2':
+                $reviewsQuery->where('rating', 2);
+                break;
+            case 'rating_1':
+                $reviewsQuery->where('rating', 1);
+                break;
+            case 'date_desc':
+                $reviewsQuery->orderBy('created_at', 'desc');
+                break;
+            case 'all':
+            default:
+                // No filter, show all reviews
+                break;
+        }
+
+        $product->load(['category', 'images', 'transactionItems']);
+        $product->setRelation('reviews', $reviewsQuery->get());
+        $product->loadAvg('reviews', 'rating');
+        $product->loadSum('transactionItems', 'quantity');
+        $totalReviewsCount = $product->reviews()->count();
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->withAvg('reviews', 'rating')
+            ->withSum('transactionItems', 'quantity')
             ->where('status', 'active')
             ->limit(4)
             ->get();
 
-        return view('user.products.show', compact('product', 'relatedProducts'));
+        // Handle AJAX request for reviews section
+        if ($request->ajax()) {
+            return view('user.products.partials.reviews', compact('product', 'sortBy', 'totalReviewsCount'));
+        }
+
+        return view('user.products.show', compact('product', 'relatedProducts', 'sortBy', 'totalReviewsCount'));
     }
 }
