@@ -8,12 +8,53 @@ use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 
 class CheckoutController extends Controller
 {
+    private function sendWhatsAppNotification($phoneNumber, $message)
+    {
+        // Normalize phone number: remove country code if present
+        if (str_starts_with($phoneNumber, '62')) {
+            $phoneNumber = substr($phoneNumber, 2);
+        } elseif (str_starts_with($phoneNumber, '+62')) {
+            $phoneNumber = substr($phoneNumber, 3);
+        } elseif (str_starts_with($phoneNumber, '0')) {
+            $phoneNumber = substr($phoneNumber, 1);
+        }
 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $phoneNumber,
+                'message' => $message,
+                'countryCode' => '62', //optional
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: ' . env('WA_API_TOKEN') // Gunakan token dari config
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            Log::error('Fonnte API error: ' . $error_msg);
+        }
+        curl_close($curl);
+
+        return $response;
+    }
 
     public function index(Request $request)
     {
@@ -134,6 +175,7 @@ class CheckoutController extends Controller
                 'product_id' => 'required|exists:products,id',
                 'quantity' => 'required|integer|min:1',
                 'address' => 'required|string|max:500',
+                'phone' => 'required|string|max:15',
                 'province_id' => 'required',
                 'province' => 'required|string|max:255',
                 'city_id' => 'required',
@@ -185,6 +227,10 @@ class CheckoutController extends Controller
 
                 // Decrease product stock
                 $product->decrement('stock', $request->quantity);
+
+                // Send WhatsApp notification
+                $message = "Pesanan baru!\n\nKode Pesanan: {$transaction->order_code}\nProduk: {$product->product_name}\nJumlah: {$request->quantity}\nTotal: Rp " . number_format($total, 0, ',', '.') . "\n\nAlamat Pengiriman: {$request->address}\n\nTerimakasih Telah Berbelanja Di Toko Kami!";
+                $this->sendWhatsAppNotification($request->phone, $message);
             });
 
             if ($request->payment_method === 'midtrans') {
@@ -212,6 +258,7 @@ class CheckoutController extends Controller
             // Single product checkout from checkout page
             $request->validate([
                 'address' => 'required|string|max:500',
+                'phone' => 'required|string|max:15',
                 'province_id' => 'required',
                 'province' => 'required|string|max:255',
                 'city_id' => 'required',
@@ -265,6 +312,10 @@ class CheckoutController extends Controller
 
                 // Decrease product stock
                 $product->decrement('stock', $request->quantity);
+
+                // Send WhatsApp notification
+                $message = "Pesanan baru!\n\nKode Pesanan: {$transaction->order_code}\nProduk: {$product->product_name}\nJumlah: {$request->quantity}\nTotal: Rp " . number_format($total, 0, ',', '.') . "\n\nAlamat Pengiriman: {$request->address}\n\nTerimakasih Telah Berbelanja Di Toko Kami!";
+                $this->sendWhatsAppNotification($request->phone, $message);
             });
 
             if ($request->payment_method === 'midtrans') {
@@ -292,6 +343,7 @@ class CheckoutController extends Controller
             // Cart checkout
             $request->validate([
                 'address' => 'required|string|max:500',
+                'phone' => 'required|string|max:15',
                 'province_id' => 'required',
                 'province' => 'required|string|max:255',
                 'city_id' => 'required',
@@ -365,6 +417,13 @@ class CheckoutController extends Controller
 
                 // Remove items from cart
                 Cart::whereIn('id', $carts->pluck('id'))->delete();
+
+                // Send WhatsApp notification for cart checkout
+                $productList = $carts->map(function ($cart) {
+                    return "- {$cart->product->product_name} (Qty: {$cart->quantity})";
+                })->implode("\n");
+                $message = "Pesanan baru!\n\nKode Pesanan: {$transaction->order_code}\nProduk:\n{$productList}\nTotal: Rp " . number_format($total, 0, ',', '.') . "\n\nAlamat Pengiriman: {$request->address}\n\nTerimakasih Telah Berbelanja Di Toko Kami!";
+                $this->sendWhatsAppNotification($request->phone, $message);
             });
 
             if ($request->payment_method === 'midtrans') {

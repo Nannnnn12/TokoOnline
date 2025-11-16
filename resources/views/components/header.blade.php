@@ -31,6 +31,12 @@
                         <span
                             class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-600 to-orange-600 transition-all duration-200 group-hover:w-full"></span>
                     </a>
+                    <a href="/articles"
+                        class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium relative group">
+                        Blog
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-600 to-orange-600 transition-all duration-200 group-hover:w-full"></span>
+                    </a>
                     <a href="/contact"
                         class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium relative group">
                         Kontak
@@ -178,6 +184,10 @@
                 <a href="/products"
                     class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-50">
                     Produk
+                </a>
+                <a href="/articles"
+                    class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-50">
+                    Blog
                 </a>
                 <a href="/categories"
                     class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-50">

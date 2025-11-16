@@ -138,6 +138,18 @@
                                     @enderror
                                 </div>
 
+                                {{-- Nomor WhatsApp --}}
+                                <div class="mb-6">
+                                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-3">Nomor WhatsApp <span class="text-red-500">*</span></label>
+                                    <input type="text" id="phone" name="phone"
+                                        value="{{ old('phone', Auth::user()->phone ?? '') }}"
+                                        class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-yellow-100 focus:border-yellow-500 transition-all duration-200 bg-white"
+                                        placeholder="Masukkan nomor WhatsApp (contoh: 08123456789)" required>
+                                    @error('phone')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 {{-- Kurir --}}
                                 <div class="mb-4">
                                     <label for="courier" class="block text-gray-700 mb-2">Kurir Pengiriman</label>

@@ -1,12 +1,9 @@
-# TODO: Redesign Review Blade
+# TODO: Add Category to Articles and Redesign Index
 
 ## Tasks
-- [x] Reverse rating stars loop to display 5 stars on left, 1 on right
-- [x] Add hover effects on stars to preview rating selection
-- [x] Wrap form sections (product info, rating, comment, image) in elegant card layouts
-- [x] Improve spacing, transitions, and Tailwind styling for better elegance
-- [x] Test the redesigned view in the browser (Laravel server running on http://127.0.0.1:8000)
-- [x] Update review display to show "(you)" if review belongs to current user
-
-## Status
-- All tasks completed
+- [x] Create migration to add category_id to articles table
+- [x] Update Article model to add belongsTo relationship with Category
+- [x] Update ArticleController index method to fetch categories and filter articles by selected category
+- [x] Update Filament Articles page to include category selection in the form
+- [x] Redesign resources/views/user/articles/index.blade.php to include category filters and improved layout
+- [x] Test the changes to ensure functionality
