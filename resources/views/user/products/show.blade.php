@@ -151,17 +151,8 @@
                         </div>
 
                         <div class="prose prose-gray max-w-none">
-                            <div class="text-gray-700 leading-relaxed space-y-4">
-                                @php
-                                    $description = nl2br(e($product->description));
-                                    $paragraphs = explode('<br />', $description);
-                                @endphp
-
-                                @foreach ($paragraphs as $paragraph)
-                                    @if (trim($paragraph))
-                                        <p class="text-base leading-relaxed">{{ $paragraph }}</p>
-                                    @endif
-                                @endforeach
+                            <div class="text-gray-700 leading-relaxed">
+                                {!! $product->description !!}
                             </div>
                         </div>
                     </div>

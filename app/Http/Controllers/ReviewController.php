@@ -105,7 +105,7 @@ class ReviewController extends Controller
         Review::create($reviewData);
 
         // Redirect kembali ke halaman review dengan flag session
-        return redirect()->route('orders.index', ['status' => 'delivered'])
+    return redirect()->route('orders.index', ['status' => 'delivered', 'sub_tab' => 'belum_dinilai'])
             ->with('success', 'Ulasan berhasil dikirim. Terima kasih!');
 
 

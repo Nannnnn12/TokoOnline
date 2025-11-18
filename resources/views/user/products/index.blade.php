@@ -16,13 +16,21 @@
                             <div class="relative">
                                 <input type="text" name="search" id="search" value="{{ request('search') }}"
                                     placeholder="Cari produk favorit Anda..."
-                                    class="w-full pl-10 pr-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400"
+                                    class="w-full pl-10 pr-12 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-gray-900 placeholder-gray-400"
                                     onchange="applyFilters()">
                                 <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
+                                <button type="button" id="clear-search"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                    onclick="clearSearch()">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
 
@@ -147,7 +155,15 @@
                                         {{ $product->product_name }}
                                     </h3>
                                     <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                        {{ $product->description }}</p>
+                                        @php
+                                            $desc = strip_tags($product->description);
+                                            $desc = preg_replace('/(?<=[a-zA-Z])(?=[A-Z])/', ' ', $desc); 
+                                            $desc = str_replace(',', ', ', $desc);
+                                            $desc = str_replace('bahan', ' bahan', $desc);
+                                            $desc = Str::limit($desc, 100);
+                                        @endphp
+
+                                        {!! $desc !!}
                                     <div class="flex justify-between items-center">
                                         <div class="flex flex-col">
                                             <span class="text-xl font-bold text-yellow-600">Rp
@@ -176,8 +192,10 @@
                                                 <span
                                                     class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
                                             </div>
-                                            @if($product->transaction_items_sum_quantity > 0)
-                                                <span class="text-xs text-gray-500">{{ $product->transaction_items_sum_quantity }} terjual</span>
+                                            @if ($product->transaction_items_sum_quantity > 0)
+                                                <span
+                                                    class="text-xs text-gray-500">{{ $product->transaction_items_sum_quantity }}
+                                                    terjual</span>
                                             @endif
                                         </div>
                                     </div>
@@ -284,4 +302,15 @@
             }
         }, 500); // Wait 500ms after user stops typing
     });
+
+    // Function to clear search
+    function clearSearch() {
+        document.getElementById('search').value = '';
+        // Check if we're on mobile or desktop and call appropriate function
+        if (window.innerWidth < 1024) {
+            applyFiltersMobile();
+        } else {
+            applyFilters();
+        }
+    }
 </script>

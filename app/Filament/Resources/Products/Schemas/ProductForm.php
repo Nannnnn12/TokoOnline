@@ -4,9 +4,9 @@ namespace App\Filament\Resources\Products\Schemas;
 
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -28,7 +28,7 @@ class ProductForm
                     ->label('Kategori')
                     ->options(Category::all()->pluck('category_name', 'id'))
                     ->required(),
-                Textarea::make('description')
+                RichEditor::make('description')
                     ->label('Deskripsi')
                     ->default(null)
                     ->columnSpanFull(),

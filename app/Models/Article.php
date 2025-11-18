@@ -30,13 +30,11 @@ class Article extends Model
         parent::boot();
 
         static::creating(function ($article) {
-            if (empty($article->slug)) {
-                $article->slug = Str::slug($article->title);
-            }
+            $article->slug = Str::slug($article->title);
         });
 
         static::updating(function ($article) {
-            if ($article->isDirty('title') && empty($article->slug)) {
+            if ($article->isDirty('title')) {
                 $article->slug = Str::slug($article->title);
             }
         });

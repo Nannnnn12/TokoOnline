@@ -26,11 +26,7 @@ class ArticleForm
                     ->required()
                     ->columnSpanFull(),
 
-                TextInput::make('slug')
-                    ->label('Slug')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->columnSpan(1),
+
 
                 Select::make('category_id')
                     ->label('Kategori')

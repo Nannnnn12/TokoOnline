@@ -25,7 +25,8 @@
                                 Pesanan #{{ $transaction->order_code }}
                             </h1>
                             <p class="text-blue-100 mt-1">
-                                {{ $transaction->created_at->format('F d, Y \a\t H:i') }}
+                                {{ $transaction->created_at->locale('id')->translatedFormat('d F Y \p\u\k\u\l H:i') }}
+
                             </p>
                         </div>
                         <div class="mt-4 sm:mt-0">
@@ -184,7 +185,7 @@
                     <h2 class="text-lg font-semibold text-gray-900">Status Pesanan</h2>
                     @if (in_array($transaction->status, ['shipped', 'delivered']))
                         <div class="flex items-center space-x-3">
-                        <h3 icd="tracking-label" class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                            <h3 icd="tracking-label" class="text-sm font-medium text-gray-500 uppercase tracking-wide">
                                 Kode Resi:
                             </h3>
 
@@ -259,7 +260,8 @@
                                         </div>
                                         @if ($index <= $currentStatusIndex)
                                             <div class="text-xs text-gray-500">
-                                                {{ $transaction->updated_at->format('M d, H:i') }}
+                                               {{ $transaction->updated_at->locale('id')->translatedFormat('F d, H:i') }}
+
                                             </div>
                                         @endif
                                     </div>
