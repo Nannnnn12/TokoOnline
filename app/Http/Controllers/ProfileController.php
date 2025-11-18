@@ -21,7 +21,6 @@ class ProfileController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'address' => 'nullable|string|max:500',
             'profile_image' => 'nullable|file|mimes:jpeg,jpg,png|max:5048',
             'remove_profile_image' => 'nullable|boolean',
@@ -52,7 +51,6 @@ class ProfileController extends Controller
         // Update basic info
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
             'address' => $request->address,
         ]);
 
