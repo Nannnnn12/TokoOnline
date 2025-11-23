@@ -105,6 +105,20 @@
                                 <span>Dinilai</span>
                             </div>
                         </a>
+                        <a href="{{ route('orders.index', ['status' => 'dibatalkan']) }}"
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                       {{ request('status') == 'dibatalkan' ? 'bg-gray-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                            <div class="flex items-center justify-center space-x-1 sm:space-x-2">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                <span>Dibatalkan</span>
+                            </div>
+                        </a>
+
+
                     </nav>
                 </div>
             </div>
@@ -346,6 +360,7 @@
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                                 <!-- Order Header -->
                                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                                    @php $firstItem = $transaction->items->first(); @endphp
                                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                         <div class="mb-2 sm:mb-0">
                                             <h3 class="text-lg font-semibold text-gray-900">
@@ -369,15 +384,18 @@
                                             bg-purple-100 text-purple-800
                                         @elseif($transaction->status == 'delivered')
                                             bg-green-100 text-green-800
+                                        @elseif($transaction->status == 'cancelled')
+                                            bg-gray-100 text-gray-800
                                         @else
                                             bg-gray-100 text-gray-800 @endif">
                                                 @if ($transaction->status == 'belum_dibayar')
                                                     Belum Dibayar
+                                                @elseif($transaction->status == 'cancelled')
+                                                    Dibatalkan
                                                 @else
                                                     {{ ucfirst($transaction->status) }}
                                                 @endif
                                             </span>
-                                            <!-- Pay Button for Unpaid Midtrans Orders -->
                                             @if ($transaction->status == 'belum_dibayar' && $transaction->payment_method == 'midtrans')
                                                 <a href="{{ route('payment.show', $transaction->order_code) }}"
                                                     class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
@@ -389,6 +407,19 @@
                                                         </path>
                                                     </svg>
                                                     Bayar
+                                                </a>
+                                            @endif
+                                            @if ($transaction->status == 'cancelled')
+                                                <a href="{{ route('products.show', $firstItem->product) }}"
+                                                    class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition-colors">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                                                        </path>
+                                                    </svg>
+                                                    Beli Lagi
                                                 </a>
                                             @endif
                                             <!-- View Details Button -->
@@ -414,7 +445,6 @@
                                         <div class="flex-1 mb-4 sm:mb-0">
                                             <div class="flex items-center space-x-4">
                                                 @if ($transaction->items->count() > 0)
-                                                    @php $firstItem = $transaction->items->first(); @endphp
                                                     <div class="flex-shrink-0">
                                                         @if ($firstItem->product->images->count() > 0)
                                                             <img src="{{ asset('storage/' . $firstItem->product->images->first()->image_path) }}"

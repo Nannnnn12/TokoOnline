@@ -110,7 +110,7 @@
             <!-- Products Grid -->
             <div class="bg-white/50 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20">
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold text-gray-900">Koleksi Produk</h2>
+                    <h2 class="md:text-2xl text-xl font-bold text-gray-900">Koleksi Produk</h2>
                     <div class="text-sm text-gray-600">
                         Menampilkan {{ $products->count() }} produk
                     </div>
@@ -154,24 +154,14 @@
                                         class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
                                         {{ $product->product_name }}
                                     </h3>
-                                    <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                        @php
-                                            $desc = strip_tags($product->description);
-                                            $desc = preg_replace('/(?<=[a-zA-Z])(?=[A-Z])/', ' ', $desc); 
-                                            $desc = str_replace(',', ', ', $desc);
-                                            $desc = str_replace('bahan', ' bahan', $desc);
-                                            $desc = Str::limit($desc, 100);
-                                        @endphp
-
-                                        {!! $desc !!}
-                                    <div class="flex justify-between items-center">
+                                    <div class="flex flex-col items-start space-y-4">
                                         <div class="flex flex-col">
                                             <span class="text-xl font-bold text-yellow-600">Rp
                                                 {{ number_format($product->sell_price, 0, ',', '.') }}</span>
-                                            <span class="text-xs text-gray-500">Harga terbaik</span>
+                                                <span class="text-xs text-gray-500">Harga terbaik</span>
                                         </div>
-                                        <div class="flex flex-col items-end space-y-1">
-                                            <div class="flex items-center space-x-1">
+                                        <div class="flex items-start space-y-1 space-x-2">
+                                            <div class="flex items-center space-x-1 border-r border-gray-300 pr-2">
                                                 <div class="flex text-yellow-400">
                                                     @for ($i = 1; $i <= 5; $i++)
                                                         @if ($i <= round($product->reviews_avg_rating ?? 0))
@@ -196,6 +186,8 @@
                                                 <span
                                                     class="text-xs text-gray-500">{{ $product->transaction_items_sum_quantity }}
                                                     terjual</span>
+                                            @else
+                                                <span class="text-xs text-gray-500">Belum Terjual</span>
                                             @endif
                                         </div>
                                     </div>

@@ -19,80 +19,85 @@
                             <div class="flex-1">
                                 <div class="space-y-4">
                                     @foreach ($carts as $cart)
-                                        <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                                            <!-- Checkbox -->
-                                            <input type="checkbox"
-                                                class="cart-checkbox w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
-                                                data-cart-id="{{ $cart->id }}"
-                                                data-price="{{ $cart->product->sell_price }}"
-                                                data-quantity="{{ $cart->quantity }}">
+                                        <div
+                                            class="flex flex-col md:flex-row md:items-center gap-4 p-4 border border-gray-200 rounded-lg">
 
-                                            <!-- Product Image -->
-                                            <div class="flex-shrink-0">
-                                                <img class="h-16 w-16 rounded-lg object-cover"
+                                            <!-- Row 1: Checkbox + gambar + nama produk -->
+                                            <div class="flex items-center gap-3">
+                                                <input type="checkbox"
+                                                    class="cart-checkbox w-4 h-4 mt-1 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
+                                                    data-cart-id="{{ $cart->id }}"
+                                                    data-price="{{ $cart->product->sell_price }}"
+                                                    data-quantity="{{ $cart->quantity }}">
+
+                                                <img class="h-16 w-16 object-cover rounded-lg"
                                                     src="{{ $cart->product->images->first() ? asset('storage/' . $cart->product->images->first()->image_path) : asset('images/placeholder-product.png') }}"
-                                                    alt="{{ $cart->product->name }}">
+                                                    alt="{{ $cart->product->product_name }}">
+
+                                                <div class="flex-1">
+                                                    <h3 class="text-base font-medium text-gray-900">
+                                                        {{ $cart->product->product_name }}
+                                                    </h3>
+                                                    <p class="text-sm text-gray-600">
+                                                        Rp {{ number_format($cart->product->sell_price, 0, ',', '.') }}
+                                                    </p>
+                                                </div>
                                             </div>
 
-                                            <!-- Product Details -->
-                                            <div class="flex-1">
-                                                <h3 class="text-lg font-medium text-gray-900">
-                                                    {{ $cart->product->product_name }}</h3>
-                                                <p class="text-sm text-gray-600">Rp
-                                                    {{ number_format($cart->product->sell_price, 0, ',', '.') }}</p>
-                                            </div>
+                                            <!-- Row 2: Quantity + Total + Hapus -->
+                                            <div class="flex items-center justify-between md:justify-end w-full gap-4">
 
-                                            <!-- Quantity Controls -->
-                                            <div class="flex items-center space-x-2">
-                                                <button type="button"
-                                                    class="quantity-btn p-1 border border-gray-300 rounded-md hover:bg-gray-50"
-                                                    data-action="decrease" data-cart-id="{{ $cart->id }}">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M20 12H4"></path>
-                                                    </svg>
-                                                </button>
-                                                <input type="number"
-                                                    class="no-spinner quantity-input w-16 px-2 py-1 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                                                    value="{{ $cart->quantity }}" min="1"
-                                                    max="{{ $cart->product->stock }}"
-                                                    data-cart-id="{{ $cart->id }}">
+                                                <!-- Quantity Controls -->
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button"
+                                                        class="quantity-btn p-1 border border-gray-300 rounded-md hover:bg-gray-50"
+                                                        data-action="decrease" data-cart-id="{{ $cart->id }}">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M20 12H4"></path>
+                                                        </svg>
+                                                    </button>
 
-                                                <button type="button"
-                                                    class="quantity-btn p-1 border border-gray-300 rounded-md hover:bg-gray-50"
-                                                    data-action="increase" data-cart-id="{{ $cart->id }}">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                                    <input type="number"
+                                                        class="no-spinner quantity-input w-14 px-2 py-1 border border-gray-300 rounded-md text-center focus:ring-2 focus:ring-yellow-500"
+                                                        value="{{ $cart->quantity }}" min="1"
+                                                        max="{{ $cart->product->stock }}"
+                                                        data-cart-id="{{ $cart->id }}">
 
-                                            <!-- Item Total -->
-                                            <div class="text-right">
+                                                    <button type="button"
+                                                        class="quantity-btn p-1 border border-gray-300 rounded-md hover:bg-gray-50"
+                                                        data-action="increase" data-cart-id="{{ $cart->id }}">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Item Total -->
                                                 <p class="text-lg font-semibold text-gray-900 item-total"
                                                     data-cart-id="{{ $cart->id }}">
                                                     Rp {{ number_format($cart->total, 0, ',', '.') }}
                                                 </p>
-                                            </div>
 
-                                            <!-- Remove Button -->
-                                            <form action="{{ route('cart.remove', $cart) }}" method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900 p-1"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </form>
+                                                <!-- Remove Button -->
+                                                <form action="{{ route('cart.remove', $cart) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900 p-1"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>

@@ -1,5 +1,5 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto px-8">
         <div class="flex justify-between items-center h-16">
             <div class="flex items-center space-x-8">
                 <div class="flex items-center space-x-3">
@@ -47,7 +47,7 @@
             </div>
 
             <!-- User Actions -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-5">
                 @auth
                     @if (auth()->user()->role === 'user')
                         <!-- Cart Button -->

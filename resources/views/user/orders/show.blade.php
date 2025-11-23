@@ -5,6 +5,18 @@
 @section('content')
     <div class="min-h-screen bg-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Flash Messages -->
+            @if (session('success'))
+                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                    role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
             <!-- Back Button -->
             <div class="mb-6">
                 <a href="{{ route('orders.index') }}"
@@ -30,19 +42,21 @@
                             </p>
                         </div>
                         <div class="mt-4 sm:mt-0">
-                            <span
-                                class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium
-                            @if ($transaction->status == 'pending') bg-yellow-100 text-yellow-800
-                            @elseif($transaction->status == 'processing')
-                                bg-blue-100 text-blue-800
-                            @elseif($transaction->status == 'shipped')
-                                bg-yellow-100 text-yellow-800
-                            @elseif($transaction->status == 'delivered')
-                                bg-green-100 text-green-800
-                            @else
-                                bg-gray-100 text-gray-800 @endif">
-                                {{ ucfirst($transaction->status) }}
-                            </span>
+                            <div class="flex flex-col items-end space-y-2">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium
+                                @if ($transaction->status == 'pending') bg-yellow-100 text-yellow-800
+                                @elseif($transaction->status == 'processing')
+                                    bg-blue-100 text-blue-800
+                                @elseif($transaction->status == 'shipped')
+                                    bg-yellow-100 text-yellow-800
+                                @elseif($transaction->status == 'delivered')
+                                    bg-green-100 text-green-800
+                                @else
+                                    bg-gray-100 text-gray-800 @endif">
+                                    {{ ucfirst($transaction->status) }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -260,7 +274,7 @@
                                         </div>
                                         @if ($index <= $currentStatusIndex)
                                             <div class="text-xs text-gray-500">
-                                               {{ $transaction->updated_at->locale('id')->translatedFormat('F d, H:i') }}
+                                                {{ $transaction->updated_at->locale('id')->translatedFormat('F d, H:i') }}
 
                                             </div>
                                         @endif
@@ -274,6 +288,21 @@
                     </div>
                 </div>
             </div>
+            @if (!in_array($transaction->status, ['shipped', 'delivered']))
+                <form action="{{ route('orders.cancel', $transaction->order_code) }}" method="POST" class="inline ">
+                    @csrf
+                    @method('POST')
+                    <button type="submit"
+                        class="inline-flex items-center px-4 py-2 border w-full h-16 mt-6 border-red-300 rounded-md text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                        onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Batalkan Pesanan
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
     <script>

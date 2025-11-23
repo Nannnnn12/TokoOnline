@@ -12,10 +12,14 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
 use App\Models\Product;
 
+use App\Models\Category;
+
 Route::get('/', function () {
     $store = App\Models\Store::first();
     $products = Product::with(['category', 'images'])->withAvg('reviews', 'rating')->where('status', 'active')->limit(6)->get();
-    return view('user.homepage', compact('store', 'products'));
+    $sliderImages = App\Models\SliderImage::where('is_active', true)->get();
+    $categories = Category::limit(6)->get();
+    return view('user.homepage', compact('store', 'products', 'sliderImages', 'categories'));
 })->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -46,6 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{transaction:order_code}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{transaction:order_code}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

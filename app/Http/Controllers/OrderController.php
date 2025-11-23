@@ -16,6 +16,8 @@ class OrderController extends Controller
     $status = $request->status;
     if ($status == 'dinilai') {
         $status = 'delivered';
+    } elseif ($status == 'dibatalkan') {
+        $status = 'cancelled';
     }
 
     if ($request->has('status') && $request->status !== 'all') {
@@ -76,5 +78,22 @@ class OrderController extends Controller
         $transaction->load(['items.product', 'customer']);
 
         return view('user.orders.show', compact('transaction'));
+    }
+
+    public function cancel(Transaction $transaction)
+    {
+        // Ensure user can only cancel their own orders
+        if ($transaction->customer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Only allow cancellation if status is not shipped or delivered
+        if (in_array($transaction->status, ['shipped', 'delivered'])) {
+            return back()->with('error', 'Pesanan yang sudah dikirim atau diterima tidak dapat dibatalkan.');
+        }
+
+        $transaction->update(['status' => 'cancelled']);
+
+        return back()->with('success', 'Pesanan berhasil dibatalkan.');
     }
 }

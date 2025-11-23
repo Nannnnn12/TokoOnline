@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
@@ -13,15 +14,39 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Tips Musik'],
-            ['name' => 'Tutorial'],
-            ['name' => 'Review'],
-            ['name' => 'Event & Promo'],
-            ['name' => 'Informasi Toko'],
+            [
+                'category_name' => 'Electronics',
+                'slug' => Str::slug('Electronics'),
+                // Assuming you have these icons uploaded in storage/app/public/category-icons/
+                'icon' => 'category-icons/electronics.png',
+            ],
+            [
+                'category_name' => 'Fashion',
+                'slug' => Str::slug('Fashion'),
+                'icon' => 'category-icons/fashion.png',
+            ],
+            [
+                'category_name' => 'Home & Living',
+                'slug' => Str::slug('Home & Living'),
+                'icon' => 'category-icons/home-living.png',
+            ],
+            [
+                'category_name' => 'Books',
+                'slug' => Str::slug('Books'),
+                'icon' => 'category-icons/books.png',
+            ],
+            [
+                'category_name' => 'Sports',
+                'slug' => Str::slug('Sports'),
+                'icon' => 'category-icons/sports.png',
+            ],
         ];
 
         foreach ($categories as $category) {
-            \App\Models\ArticleCategory::create($category);
+            Category::updateOrCreate(
+                ['slug' => $category['slug']],
+                $category
+            );
         }
     }
 }

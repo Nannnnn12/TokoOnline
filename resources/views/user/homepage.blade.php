@@ -3,29 +3,62 @@
 @section('title', 'Beranda - Toko Online')
 
 @section('content')
+    <style>
+        .swiper-wrapper {
+            display: flex !important;
+        }
+
+        .swiper-slide {
+            width: 100% !important;
+            flex-shrink: 0 !important;
+        }
+    </style>
+
     <div class="min-h-screen bg-gradient-to-br from-white to-yellow-50">
         <!-- Hero Section -->
         <section class="relative overflow-hidden bg-gradient-to-r from-white to-yellow-100 py-32">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                <div class="text-center">
-                    <h1 class="text-5xl md:text-6xl font-bold text-gray-900">
-                        Selamat Datang di
-                        <span class="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                            {{ $store->store_name ?? 'TokoKu' }}
-                        </span>
-                    </h1>
-                    <p class="py-8">{{ $store->description }}</p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#products"
-                            class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-8 py-4 rounded-lg hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            Belanja Sekarang
-                        </a>
-                        <a href="#about"
-                            class="border-2 border-yellow-600 text-yellow-600 px-8 py-4 rounded-lg hover:bg-yellow-600 hover:text-white transition-all duration-300 font-semibold">
-                            Pelajari Selengkapnya
-                        </a>
-                    </div>
+
+            <div class="swiper mySwiper max-w-5xl mx-auto h-72 rounded-2xl overflow-hidden shadow-lg relative">
+
+                <div class="swiper-wrapper">
+                    @foreach ($sliderImages as $sliderImage)
+                        <div class="swiper-slide">
+                            <img src="{{ asset('storage/' . $sliderImage->image_path) }}" alt="{{ $sliderImage->title ?? 'Slider Image' }}"
+                                class="w-full h-full object-cover">
+                        </div>
+                    @endforeach
                 </div>
+
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+
+                <!-- Modern Navigation Buttons -->
+                <div
+                    class="swiper-button-next !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70 transition">
+                </div>
+                <div
+                    class="swiper-button-prev !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70 transition">
+                </div>
+
+
+            </div>
+
+            <!-- Categories Container -->
+            <div class="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-6 px-4">
+                @foreach ($categories as $category)
+                    <a href="{{ route('products.index', ['category' => $category->id]) }}"
+                        class="flex flex-col items-center space-y-2 bg-white rounded-lg p-4 shadow hover:shadow-lg transition">
+                        @if (!empty($category->icon))
+                            <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->category_name }}" title="{{ $category->category_name }}"
+                                 class="w-16 h-16 object-contain">
+                        @else
+                            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
+                                {{ strtoupper(substr($category->category_name, 0, 2)) }}
+                            </div>
+                        @endif
+                        <span class="text-gray-900 font-semibold">{{ $category->category_name }}</span>
+                    </a>
+                @endforeach
             </div>
 
             <!-- Decorative Elements -->
@@ -34,63 +67,6 @@
                 class="absolute bottom-10 right-10 w-32 h-32 bg-orange-200 rounded-full opacity-20 animate-pulse delay-1000">
             </div>
             <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-300 rounded-full opacity-30 animate-bounce"></div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Mengapa Memilih Kami?</h2>
-                    <p class="text-gray-600 text-lg">Kami menyediakan pengalaman berbelanja terbaik dengan produk
-                        berkualitas dan
-                        layanan yang sangat baik</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div
-                        class="text-center p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Produk Berkualitas</h3>
-                        <p class="text-gray-600">Kami dengan teliti memilih hanya produk berkualitas tertinggi untuk
-                            pelanggan kami</p>
-                    </div>
-
-                    <div
-                        class="text-center p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Harga Terbaik</h3>
-                        <p class="text-gray-600">Harga kompetitif dengan diskon reguler dan penawaran khusus</p>
-                    </div>
-
-                    <div
-                        class="text-center p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Pengiriman Cepat</h3>
-                        <p class="text-gray-600">Pengiriman cepat dan andal untuk mendapatkan pesanan Anda secepat mungkin
-                        </p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- Products Preview Section -->
@@ -138,28 +114,43 @@
                                     class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
                                     {{ $product->product_name }}
                                 </h3>
-                                <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                    {{ $product->description }}</p>
-                                <div class="flex items-center space-x-1">
-                                    <div class="flex text-yellow-400">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @if ($i <= round($product->reviews_avg_rating ?? 0))
-                                                <!-- Full star -->
-                                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            @else
-                                                <!-- Empty star -->
-                                                <svg class="w-4 h-4 fill-gray-300" viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            @endif
-                                        @endfor
+
+                                <div class="flex flex-col items-start space-y-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-xl font-bold text-yellow-600">Rp
+                                            {{ number_format($product->sell_price, 0, ',', '.') }}</span>
+                                        <span class="text-xs text-gray-500">Harga terbaik</span>
                                     </div>
-                                    <span
-                                        class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
+                                    <div class="flex items-start space-y-1 space-x-2">
+                                        <div class="flex items-center space-x-1 border-r border-gray-300 pr-2">
+                                            <div class="flex text-yellow-400">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= round($product->reviews_avg_rating ?? 0))
+                                                        <!-- Full star -->
+                                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @else
+                                                        <!-- Empty star -->
+                                                        <svg class="w-4 h-4 fill-gray-300" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                            <span
+                                                class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
+                                        </div>
+                                        @if ($product->transaction_items_sum_quantity > 0)
+                                            <span
+                                                class="text-xs text-gray-500">{{ $product->transaction_items_sum_quantity }}
+                                                terjual</span>
+                                        @else
+                                            <span class="text-xs text-gray-500">Belum Terjual</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -243,4 +234,5 @@
             </div>
         </section>
     </div>
+
 @endsection

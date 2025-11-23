@@ -29,17 +29,17 @@
                     </div>
 
                     <!-- Sort Buttons -->
-                    <div class="flex items-center space-x-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
                         <span class="text-sm text-gray-600">Filter:</span>
-                        <div class="flex space-x-1">
+                        <div class="flex flex-wrap gap-1 sm:gap-1">
                             <a href="{{ route('products.show', $product) }}?sort=all"
-                                class="filter-btn px-3 py-1 text-xs rounded-full {{ $sortBy == 'all' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors"
+                                class="filter-btn px-2 sm:px-3 py-1 text-xs rounded-full {{ $sortBy == 'all' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors"
                                 data-sort="all">
                                 Semua
                             </a>
                             @for ($i = 5; $i >= 1; $i--)
                                 <a href="{{ route('products.show', $product) }}?sort=rating_{{ $i }}"
-                                    class="filter-btn px-3 py-1 text-xs rounded-full {{ $sortBy == 'rating_' . $i ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors flex items-center space-x-1"
+                                    class="filter-btn px-2 sm:px-3 py-1 text-xs rounded-full {{ $sortBy == 'rating_' . $i ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors flex items-center space-x-1"
                                     data-sort="rating_{{ $i }}">
                                     <span>{{ $i }}</span>
                                     <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
@@ -48,7 +48,7 @@
                                 </a>
                             @endfor
                             <a href="{{ route('products.show', $product) }}?sort=date_desc"
-                                class="filter-btn px-3 py-1 text-xs rounded-full {{ $sortBy == 'date_desc' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors"
+                                class="filter-btn px-2 sm:px-3 py-1 text-xs rounded-full {{ $sortBy == 'date_desc' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }} transition-colors"
                                 data-sort="date_desc">
                                 Terbaru
                             </a>
