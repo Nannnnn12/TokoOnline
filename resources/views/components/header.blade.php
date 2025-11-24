@@ -5,13 +5,13 @@
                 <div class="flex items-center space-x-3">
                     @if (isset($store) && $store->logo)
                         <img src="{{ asset('storage/' . $store->logo) }}" alt="{{ $store->store_name ?? 'Store Logo' }}"
-                            class="h-10 w-auto">
+                            class="h-6 sm:h-10 w-auto">
                         <h1
-                            class="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                            class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                             {{ $store->store_name }}</h1>
                     @else
                         <h1
-                            class="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                            class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                             {{ $store->store_name ?? 'TokoKu' }}
                         </h1>
                     @endif
@@ -44,6 +44,15 @@
                             class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-600 to-orange-600 transition-all duration-200 group-hover:w-full"></span>
                     </a>
                 </div>
+                <!-- Search Bar Form -->
+                <form action="/products" method="GET" class="flex items-center mx-6 w-full max-w-md">
+                    <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}"
+                        class="flex-grow border border-gray-300 rounded-l-md py-1 px-2 text-sm sm:py-2 sm:px-4 sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" />
+                    <button type="submit"
+                        class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white rounded-r-md py-1 px-3 text-sm sm:py-2 sm:px-5 sm:text-base hover:from-yellow-700 hover:to-orange-700 transition-colors">
+                        Cari
+                    </button>
+                </form>
             </div>
 
             <!-- User Actions -->
@@ -138,7 +147,8 @@
                                     @csrf
                                     <button type="submit"
                                         class="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                                             </path>
@@ -151,13 +161,14 @@
                     </div>
                 @else
                     <a href="{{ route('login') }}"
-                        class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium relative group">
+                        class="hidden lg:inline-block text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium relative group">
                         Sign In
                         <span
                             class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-600 to-orange-600 transition-all duration-200 group-hover:w-full"></span>
                     </a>
+
                     <a href="{{ route('register') }}"
-                        class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-6 py-2.5 rounded-lg hover:from-yellow-700 hover:to-orange-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        class="hidden lg:inline-block bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-6 py-2.5 rounded-lg hover:from-yellow-700 hover:to-orange-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         Sign Up
                     </a>
                 @endauth
@@ -197,6 +208,16 @@
                     class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-50">
                     Kontak
                 </a>
+                @guest
+                    <a href="{{ route('login') }}"
+                        class="text-gray-600 text-center hover:text-yellow-600 transition-all duration-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-50">
+                        Sign In
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="text-white bg-gradient-to-r from-yellow-600 to-orange-600 text-center py-2 px-4 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700">
+                        Sign Up
+                    </a>
+                @endguest
             </div>
         </div>
     </div>

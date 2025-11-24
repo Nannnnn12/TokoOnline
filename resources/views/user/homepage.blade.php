@@ -18,7 +18,7 @@
         <!-- Hero Section -->
         <section class="relative overflow-hidden bg-gradient-to-r from-white to-yellow-100 py-32">
 
-            <div class="swiper mySwiper max-w-5xl mx-auto h-72 rounded-2xl overflow-hidden shadow-lg relative">
+            <div class="swiper mySwiper max-w-5xl mx-auto h-40 sm:h-56 md:h-72 rounded-2xl overflow-hidden shadow-lg relative">
 
                 <div class="swiper-wrapper">
                     @foreach ($sliderImages as $sliderImage)
