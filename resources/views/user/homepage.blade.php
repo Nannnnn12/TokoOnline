@@ -16,15 +16,16 @@
 
     <div class="min-h-screen bg-gradient-to-br from-white to-yellow-50">
         <!-- Hero Section -->
-        <section class="relative overflow-hidden bg-gradient-to-r from-white to-yellow-100 py-32">
+        <section class="relative overflow-hidden bg-gradient-to-r from-white to-yellow-100 py-32 px-6">
 
-            <div class="swiper mySwiper max-w-5xl mx-auto h-40 sm:h-56 md:h-72 rounded-2xl overflow-hidden shadow-lg relative">
+            <div
+                class="swiper mySwiper max-w-5xl mx-auto h-40 sm:h-56 md:h-72 rounded-2xl overflow-hidden shadow-lg relative">
 
                 <div class="swiper-wrapper">
                     @foreach ($sliderImages as $sliderImage)
                         <div class="swiper-slide">
-                            <img src="{{ asset('storage/' . $sliderImage->image_path) }}" alt="{{ $sliderImage->title ?? 'Slider Image' }}"
-                                class="w-full h-full object-cover">
+                            <img src="{{ asset('storage/' . $sliderImage->image_path) }}"
+                                alt="{{ $sliderImage->title ?? 'Slider Image' }}" class="w-full h-full object-cover">
                         </div>
                     @endforeach
                 </div>
@@ -39,34 +40,33 @@
                 <div
                     class="swiper-button-prev !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70 transition">
                 </div>
-
-
             </div>
 
-            <!-- Categories Container -->
-            <div class="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-6 px-4">
-                @foreach ($categories as $category)
-                    <a href="{{ route('products.index', ['category' => $category->id]) }}"
-                        class="flex flex-col items-center space-y-2 bg-white rounded-lg p-4 shadow hover:shadow-lg transition">
-                        @if (!empty($category->icon))
-                            <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->category_name }}" title="{{ $category->category_name }}"
-                                 class="w-16 h-16 object-contain">
-                        @else
-                            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
-                                {{ strtoupper(substr($category->category_name, 0, 2)) }}
-                            </div>
-                        @endif
-                        <span class="text-gray-900 font-semibold">{{ $category->category_name }}</span>
-                    </a>
-                @endforeach
-            </div>
+                <!-- Categories Container -->
+                <div class="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-6 px-4">
+                    @foreach ($categories as $category)
+                        <a href="{{ route('products.index', ['category' => $category->id]) }}"
+                            class="flex flex-col items-center space-y-2 bg-white rounded-lg p-4 sm:p-3 xs:p-2 shadow hover:shadow-lg transition">
+                            @if (!empty($category->icon))
+                                <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->category_name }}"
+                                    title="{{ $category->category_name }}" class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 object-contain">
+                            @else
+                                <div
+                                    class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
+                                    {{ strtoupper(substr($category->category_name, 0, 2)) }}
+                                </div>
+                            @endif
+                            <span class="text-gray-900 font-semibold text-base sm:text-sm xs:text-xs">{{ $category->category_name }}</span>
+                        </a>
+                    @endforeach
+                </div>
 
             <!-- Decorative Elements -->
             <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
             <div
                 class="absolute bottom-10 right-10 w-32 h-32 bg-orange-200 rounded-full opacity-20 animate-pulse delay-1000">
             </div>
-            <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-300 rounded-full opacity-30 animate-bounce"></div>
+            <div class="top-1/2 left-1/4 w-16 h-16 bg-yellow-300 rounded-full opacity-30 animate-bounce"></div>
         </section>
 
         <!-- Products Preview Section -->
@@ -86,11 +86,11 @@
                                     @if ($product->images->count() > 0)
                                         <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
                                             alt="{{ $product->product_name }}"
-                                            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                                            class="w-full h-40 sm:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                                             onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';">
                                     @else
                                         <div
-                                            class="w-full h-64 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                                            class="w-full h-40 sm:h-64 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                                             <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -111,13 +111,12 @@
                             </div>
                             <div class="p-6">
                                 <h3
-                                    class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+                                    class="text-shadow-2xs lg:text-xl text-gray-900 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
                                     {{ $product->product_name }}
                                 </h3>
-
                                 <div class="flex flex-col items-start space-y-4">
                                     <div class="flex flex-col">
-                                        <span class="text-xl font-bold text-yellow-600">Rp
+                                        <span class="text-shadow-2xs lg:text-xl text-yellow-600">Rp
                                             {{ number_format($product->sell_price, 0, ',', '.') }}</span>
                                         <span class="text-xs text-gray-500">Harga terbaik</span>
                                     </div>
@@ -127,13 +126,13 @@
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     @if ($i <= round($product->reviews_avg_rating ?? 0))
                                                         <!-- Full star -->
-                                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                        <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
                                                             <path
                                                                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                         </svg>
                                                     @else
                                                         <!-- Empty star -->
-                                                        <svg class="w-4 h-4 fill-gray-300" viewBox="0 0 20 20">
+                                                        <svg class="w-3 h-3 fill-gray-300" viewBox="0 0 20 20">
                                                             <path
                                                                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                         </svg>
@@ -141,7 +140,7 @@
                                                 @endfor
                                             </div>
                                             <span
-                                                class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
+                                                class="text-[10px] text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
                                         </div>
                                         @if ($product->transaction_items_sum_quantity > 0)
                                             <span
@@ -155,7 +154,6 @@
                             </div>
                         </a>
                     @endforeach
-
                 </div>
 
                 <div class="text-center mt-12">

@@ -18,7 +18,7 @@ Route::get('/', function () {
     $store = App\Models\Store::first();
     $products = Product::with(['category', 'images'])->withAvg('reviews', 'rating')->where('status', 'active')->limit(6)->get();
     $sliderImages = App\Models\SliderImage::where('is_active', true)->get();
-    $categories = Category::limit(6)->get();
+    $categories = Category::limit(5)->get();
     return view('user.homepage', compact('store', 'products', 'sliderImages', 'categories'));
 })->name('home');
 

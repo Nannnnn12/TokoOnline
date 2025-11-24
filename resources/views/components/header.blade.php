@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Navigation Menu -->
-                <div class="hidden lg:flex items-center space-x-8">
+                <div class="hidden lg:flex items-center ml-8 space-x-8">
                     <a href="/"
                         class="text-gray-600 hover:text-yellow-600 transition-all duration-200 font-medium relative group">
                         Beranda
@@ -45,7 +45,7 @@
                     </a>
                 </div>
                 <!-- Search Bar Form -->
-                <form action="/products" method="GET" class="flex items-center mx-6 w-full max-w-md">
+                <form action="/products" method="GET" class="flex items-center mx-6 w-full max-w-sm">
                     <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}"
                         class="flex-grow border border-gray-300 rounded-l-md py-1 px-2 text-sm sm:py-2 sm:px-4 sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" />
                     <button type="submit"

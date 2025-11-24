@@ -16,7 +16,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1">
                     <nav class="flex flex-nowrap overflow-x-auto gap-1 scrollbar-hide" aria-label="Tabs">
                         <a href="{{ route('orders.index', ['status' => 'all']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status', 'all') == 'all' ? 'bg-yellow-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -29,7 +29,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'belum_dibayar']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'belum_dibayar' ? 'bg-red-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -42,7 +42,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'pending']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'pending' ? 'bg-yellow-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -54,7 +54,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'processing']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'processing' ? 'bg-blue-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -69,7 +69,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'shipped']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'shipped' ? 'bg-purple-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -81,7 +81,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'delivered']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'delivered' ? 'bg-green-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -93,7 +93,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'dinilai']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'dinilai' ? 'bg-blue-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -106,7 +106,7 @@
                             </div>
                         </a>
                         <a href="{{ route('orders.index', ['status' => 'dibatalkan']) }}"
-                            class="flex-shrink-0 md:flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                            class="flex-shrink-0 md:flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                        {{ request('status') == 'dibatalkan' ? 'bg-gray-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                             <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -131,7 +131,7 @@
                             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1">
                                 <nav class="flex flex-nowrap overflow-x-auto gap-1 scrollbar-hide" aria-label="Sub-tabs">
                                     <a href="{{ route('orders.index', ['status' => 'dinilai', 'sub_tab' => 'belum_dinilai']) }}"
-                                        class="flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                                        class="flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                                        {{ $subTab == 'belum_dinilai' ? 'bg-yellow-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                                         <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                             <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none"
@@ -144,7 +144,7 @@
                                         </div>
                                     </a>
                                     <a href="{{ route('orders.index', ['status' => 'dinilai', 'sub_tab' => 'lihat_review']) }}"
-                                        class="flex-1 min-w-0 py-3 px-2 sm:px-4 rounded-lg font-medium text-xs sm:text-sm text-center transition-all duration-200 touch-manipulation
+                                        class="flex-1 min-w-0 py-2 px-1 sm:px-2 rounded-lg font-medium text-[10px] sm:text-xs text-center transition-all duration-200 touch-manipulation
                                        {{ request('sub_tab') == 'lihat_review' ? 'bg-blue-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                                         <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                                             <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none"
