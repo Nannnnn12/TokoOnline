@@ -106,17 +106,9 @@
                             </nav>
 
                             <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->product_name }}</h1>
-                            <p class="text-xl font-semibold text-yellow-600 mb-4">Rp
+                            <p class="text-xl font-semibold text-yellow-600 mb-2">Rp
                                 {{ number_format($product->sell_price, 0, ',', '.') }}</p>
-                            <p class="text-sm text-gray-600 mb-4">Stock:
-                                {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
-                            @if ($product->transaction_items_sum_quantity > 0)
-                                <p class="text-sm text-gray-600 mb-4">{{ $product->transaction_items_sum_quantity }} produk
-                                    terjual</p>
-                            @else
-                                <p class="text-sm text-gray-600 mb-4">Belum terjual</p>
-                            @endif
-                            <div class="flex items-center space-x-1">
+                            <div class="flex items-center space-x-1 mb-2">
                                 <div class="flex text-yellow-400">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= round($product->reviews_avg_rating ?? 0))
@@ -137,6 +129,16 @@
                                 <span
                                     class="text-xs text-gray-500 ml-1">({{ number_format($product->reviews_avg_rating ?? 0, 1) }})</span>
                             </div>
+                            <p class="text-sm text-gray-600 mb-4">Stock:
+                                {{ $product->stock > 0 ? $product->stock : 'Stok Habis' }}</p>
+                            <p class="text-sm text-gray-600 mb-4">Berat:
+                                {{ number_format($product->weight > 0 ? $product->weight : '1000') }} gram</p>
+                            @if ($product->transaction_items_sum_quantity > 0)
+                                <p class="text-sm text-gray-600 mb-4">{{ number_format($product->transaction_items_sum_quantity) }} produk
+                                    terjual</p>
+                            @else
+                                <p class="text-sm text-gray-600 mb-4">Belum terjual</p>
+                            @endif
                             {{-- </div> --}}
                         </div>
 
@@ -162,7 +164,8 @@
                         <!-- Add to Cart Form -->
                         {{-- <div class="bg-white rounded-lg p-6 shadow-sm"> --}}
                         @auth
-                            <form method="POST" action="{{ route('cart.add', $product) }}" class="space-y-4 border-t border-gray-200 py-5">
+                            <form method="POST" action="{{ route('cart.add', $product) }}"
+                                class="space-y-4 border-t border-gray-200 py-5">
                                 @csrf
                                 <div>
                                     <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>

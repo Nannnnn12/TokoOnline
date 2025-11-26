@@ -2,6 +2,7 @@
     <div class="mx-auto px-8">
         <div class="flex justify-between items-center h-16">
             <div class="flex items-center space-x-8">
+                <a href="/">
                 <div class="flex items-center space-x-3">
                     @if (isset($store) && $store->logo)
                         <img src="{{ asset('storage/' . $store->logo) }}" alt="{{ $store->store_name ?? 'Store Logo' }}"
@@ -16,6 +17,7 @@
                         </h1>
                     @endif
                 </div>
+                </a>
 
                 <!-- Navigation Menu -->
                 <div class="hidden lg:flex items-center ml-8 space-x-8">
@@ -45,9 +47,10 @@
                     </a>
                 </div>
                 <!-- Search Bar Form -->
-                <form action="/products" method="GET" class="flex items-center mx-6 w-full max-w-sm">
+                <form action="/products" method="GET"
+                    class="flex items-center mx-6 w-full max-w-sm lg:mx-0 lg:w-auto">
                     <input type="text" name="search" placeholder="Cari produk..." value="{{ request('search') }}"
-                        class="flex-grow border border-gray-300 rounded-l-md py-1 px-2 text-sm sm:py-2 sm:px-4 sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" />
+                        class="flex-grow border lg:w-5xl border-gray-300 rounded-l-md ml-8 py-1 px-2 text-sm sm:py-2 sm:px-4 sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" />
                     <button type="submit"
                         class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white rounded-r-md py-1 px-3 text-sm sm:py-2 sm:px-5 sm:text-base hover:from-yellow-700 hover:to-orange-700 transition-colors">
                         Cari

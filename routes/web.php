@@ -14,12 +14,15 @@ use App\Models\Product;
 
 use App\Models\Category;
 
+use App\Models\Review;
+
 Route::get('/', function () {
     $store = App\Models\Store::first();
-    $products = Product::with(['category', 'images'])->withAvg('reviews', 'rating')->where('status', 'active')->limit(6)->get();
+    $products = Product::with(['category', 'images'])->withAvg('reviews', 'rating')->withSum('transactionItems', 'quantity')->where('status', 'active')->limit(6)->get();
     $sliderImages = App\Models\SliderImage::where('is_active', true)->get();
     $categories = Category::limit(5)->get();
-    return view('user.homepage', compact('store', 'products', 'sliderImages', 'categories'));
+    $reviews = Review::with('user')->whereIn('rating', [4, 5]) ->whereNotNull('comment')->latest()->limit(6)->get();
+    return view('user.homepage', compact('store', 'products', 'sliderImages', 'categories', 'reviews'));
 })->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

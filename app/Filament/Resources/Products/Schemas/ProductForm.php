@@ -40,6 +40,9 @@ class ProductForm
                 ->label('Harga Jual')
                     ->required()
                     ->numeric(),
+                TextInput::make('weight')
+                ->label('Berat (gram)')
+                    ->numeric(),
                 TextInput::make('stock')
                 ->label('Stok')
                     ->required()
@@ -57,8 +60,6 @@ class ProductForm
                     ->directory('product-images')
                     ->visibility('public')
                     ->columnSpanFull(),
-
-
             ]);
     }
 }

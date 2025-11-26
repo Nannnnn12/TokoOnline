@@ -17,12 +17,14 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('category_name')
-                ->label('Nama Kategori')
+                    ->label('Nama Kategori')
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
                 ImageColumn::make('icon')
-                    ->label('Ikon'),
+                    ->label('Icon')
+                    ->disk('public')
+                    ->square(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

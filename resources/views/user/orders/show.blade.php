@@ -140,9 +140,6 @@
                                             {{ $item->product->product_name }}
                                         </a>
                                     </h3>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        {{ Str::limit($item->product->description, 100) }}
-                                    </p>
                                     <div class="flex items-center mt-2 space-x-4">
                                         <span class="text-sm text-gray-500">
                                             Jumlah: {{ $item->quantity }}
@@ -288,7 +285,7 @@
                     </div>
                 </div>
             </div>
-            @if (!in_array($transaction->status, ['shipped', 'delivered']))
+            @if (!in_array($transaction->status, ['shipped', 'delivered', 'cancelled']))
                 <form action="{{ route('orders.cancel', $transaction->order_code) }}" method="POST" class="inline ">
                     @csrf
                     @method('POST')

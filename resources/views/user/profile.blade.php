@@ -112,10 +112,19 @@
                         @enderror
                     </div>
 
+                    <!-- phone Field -->
+                    <div>
+                        <label for="phone_number" class="block text-sm font-medium text-gray-700">Nomor Telepon:</label>
+                        <input type="number" name="phone_number" id="phone_number"
+                            value="{{ old('phone_number', $user->phone_number) }}"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm @error('name') border-red-300 @enderror">
+                    </div>
+
                     <!-- Email Field -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" disabled
+                        <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
+                            disabled
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-500 cursor-not-allowed sm:text-sm">
                     </div>
 

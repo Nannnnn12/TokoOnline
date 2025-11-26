@@ -12,6 +12,50 @@
             width: 100% !important;
             flex-shrink: 0 !important;
         }
+
+        /* Pagination (titik) warna kuning */
+        .swiper-pagination-bullet {
+            background: #ffffff !important;
+            /* kuning */
+            opacity: 0.6;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #ffffff !important;
+            /* kuning lebih terang */
+            opacity: 1;
+        }
+
+        /* Pastikan tombol tidak terpotong dan berada di dalam area slider */
+        .mySwiper .swiper-button-next,
+        .mySwiper .swiper-button-prev {
+            top: 57%;
+            /* posisikan di tengah vertikal */
+            transform: translateY(-50%);
+            /* perbaiki posisi */
+            z-index: 20;
+            background-color: white !important;
+            border-radius: 9999px;
+            width: 48px !important;
+            height: 48px !important;
+        }
+
+        /* Geser sedikit ke pinggir, tapi tidak keluar area overflow */
+        .mySwiper .swiper-button-next {
+            right: 10px !important;
+        }
+
+        .mySwiper .swiper-button-prev {
+            left: 10px !important;
+        }
+
+        /* Icon panah kuning */
+        .mySwiper .swiper-button-next::after,
+        .mySwiper .swiper-button-prev::after {
+            color: #ffff !important;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 
     <div class="min-h-screen bg-gradient-to-br from-white to-yellow-50">
@@ -19,7 +63,7 @@
         <section class="relative overflow-hidden bg-gradient-to-r from-white to-yellow-100 py-32 px-6">
 
             <div
-                class="swiper mySwiper max-w-5xl mx-auto h-40 sm:h-56 md:h-72 rounded-2xl overflow-hidden shadow-lg relative">
+                class="swiper mySwiper max-w-7xl mx-auto h-40 sm:h-56 md:h-72 rounded-2xl overflow-hidden shadow-lg relative">
 
                 <div class="swiper-wrapper">
                     @foreach ($sliderImages as $sliderImage)
@@ -42,24 +86,26 @@
                 </div>
             </div>
 
-                <!-- Categories Container -->
-                <div class="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-6 px-4">
-                    @foreach ($categories as $category)
-                        <a href="{{ route('products.index', ['category' => $category->id]) }}"
-                            class="flex flex-col items-center space-y-2 bg-white rounded-lg p-4 sm:p-3 xs:p-2 shadow hover:shadow-lg transition">
-                            @if (!empty($category->icon))
-                                <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->category_name }}"
-                                    title="{{ $category->category_name }}" class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 object-contain">
-                            @else
-                                <div
-                                    class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
-                                    {{ strtoupper(substr($category->category_name, 0, 2)) }}
-                                </div>
-                            @endif
-                            <span class="text-gray-900 font-semibold text-base sm:text-sm xs:text-xs">{{ $category->category_name }}</span>
-                        </a>
-                    @endforeach
-                </div>
+            <!-- Categories Container -->
+            <div class="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-6 px-4">
+                @foreach ($categories as $category)
+                    <a href="{{ route('products.index', ['category' => $category->id]) }}"
+                        class="flex flex-col items-center space-y-2 bg-white rounded-lg p-4 sm:p-3 xs:p-2 shadow hover:shadow-lg transition">
+                        @if (!empty($category->icon))
+                            <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->category_name }}"
+                                title="{{ $category->category_name }}"
+                                class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 object-contain">
+                        @else
+                            <div
+                                class="w-16 h-16 sm:w-12 sm:h-12 xs:w-10 xs:h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
+                                {{ strtoupper(substr($category->category_name, 0, 2)) }}
+                            </div>
+                        @endif
+                        <span
+                            class="text-gray-900 font-semibold text-base sm:text-sm xs:text-xs">{{ $category->category_name }}</span>
+                    </a>
+                @endforeach
+            </div>
 
             <!-- Decorative Elements -->
             <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
@@ -165,69 +211,51 @@
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h2 class="text-4xl font-bold text-gray-900 mb-6">Tentang Toko Kami</h2>
-                        <p class="text-gray-600 text-lg mb-6">
-                            {{ $store->description ?? 'Kami berkomitmen untuk memberikan pengalaman berbelanja terbaik dengan produk yang dipilih secara teliti, harga kompetitif, dan layanan pelanggan yang luar biasa. Misi kami adalah membuat produk berkualitas dapat diakses oleh semua orang.' }}
-                        </p>
-                        <div class="space-y-4">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-6 h-6 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mr-4">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
+        <section class="py-16 bg-gradient-to-br from-yellow-50 to-orange-50">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-10 text-center">Ulasan Pelanggan</h2>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    @foreach ($reviews as $review)
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-yellow-200">
+                            <div class="flex items-center gap-3 mb-4">
+                                @if ($review->user && $review->user->profile_image)
+                                    <img src="{{ asset('storage/' . $review->user->profile_image) }}" alt="avatar"
+                                        class="w-12 h-12 rounded-full object-cover">
+                                @else
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center">
+                                        <span
+                                            class="text-white text-sm font-semibold">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                    </div>
+                                @endif
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">
+                                        {{ $review->user ? $review->user->name : 'Anonymous' }}</h4>
+                                    <p class="text-sm text-gray-500">Pembeli</p>
                                 </div>
-                                <span class="text-gray-700">Produk dengan jaminan kualitas</span>
                             </div>
-                            <div class="flex items-center">
-                                <div
-                                    class="w-6 h-6 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mr-4">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <span class="text-gray-700">Pengiriman cepat dan aman</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div
-                                    class="w-6 h-6 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mr-4">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <span class="text-gray-700">Dukungan pelanggan 24/7</span>
-                            </div>
+
+                            <p class="text-yellow-500 text-lg mb-2">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $review->rating)
+                                        <svg class="inline w-5 h-5 fill-current text-yellow-500" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @else
+                                        <svg class="inline w-5 h-5 fill-current text-gray-300" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @endif
+                                @endfor
+                            </p>
+                            <p class="text-gray-600 text-sm">
+                                {{ $review->comment }}
+                            </p>
                         </div>
-                    </div>
-                    <div class="relative">
-                        <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-8 shadow-2xl">
-                            <div class="text-center">
-                                <div
-                                    class="w-24 h-24 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-4">Sangat Cepat</h3>
-                                <p class="text-gray-600">Rasakan performa yang sangat cepat dengan platform kami yang
-                                    dioptimalkan
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>

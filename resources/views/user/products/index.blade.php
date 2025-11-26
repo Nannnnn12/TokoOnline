@@ -7,9 +7,8 @@
 
         <!-- Products Grid -->
         <div class="bg-white/50 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20 m-6">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="md:text-2xl sm:text-xl text-xs font-bold text-gray-900">Koleksi Produk</h2>
-                <div class="flex gap-4 md:flex-row md:items-end md:gap-6">
+            <div class="flex justify-end mb-8">
+                <div class="flex gap-4 md:flex-row md:gap-6">
                     <!-- Category Filter -->
                     <div class="flex flex-col">
                         <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Kategori:</label>

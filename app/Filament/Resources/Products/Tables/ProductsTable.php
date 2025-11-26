@@ -18,28 +18,32 @@ class ProductsTable
         return $table
             ->columns([
                 TextColumn::make('product_name')
-                ->label('Nama Produk')
+                    ->label('Nama Produk')
                     ->searchable(),
                 TextColumn::make('category.category_name')
                     ->label('Kategori')
                     ->sortable(),
                 TextColumn::make('slug')
-                ->label('Slug')
+                    ->label('Slug')
                     ->searchable(),
                 TextColumn::make('purchase_price')
-                ->label('Harga Beli')
+                    ->label('Harga Beli')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('sell_price')
-                ->label('Harga Jual')
+                    ->label('Harga Jual')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('weight')
+                    ->label('Berat (gram)')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('stock')
-                ->label('Stok')
+                    ->label('Stok')
                     ->numeric()
                     ->sortable(),
                 SelectColumn::make('status')
-                ->label('Status')
+                    ->label('Status')
                     ->options([
                         'active' => 'Active',
                         'inactive' => 'Inactive',

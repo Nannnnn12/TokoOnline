@@ -21,6 +21,7 @@ class ProfileController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'profile_image' => 'nullable|file|mimes:jpeg,jpg,png|max:5048',
             'remove_profile_image' => 'nullable|boolean',
@@ -52,6 +53,7 @@ class ProfileController extends Controller
         $user->update([
             'name' => $request->name,
             'address' => $request->address,
+            'phone_number' => $request->phone_number,
         ]);
 
         // Update password if provided

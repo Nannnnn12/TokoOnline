@@ -16,15 +16,16 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('category_name')
-                ->label('Nama Kategori')
+                    ->label('Nama Kategori')
                     ->required()
                     ->afterStateUpdated(function (Set $set, ?string $state) {
                         $set('slug', Str::slug($state));
                     }),
                 FileUpload::make('icon')
-                ->label('Ikon')
+                    ->label('Ikon')
                     ->image()
                     ->disk('public')
+                    ->directory('icon')  // Store uploaded icons in the 'icon' folder inside storage/app/public
                     ->default(null),
             ]);
     }
